@@ -9,34 +9,17 @@ import { UserData } from "../../api/UserData";
 class App extends Component {
     constructor(props) {
         super(props);
+
+        this.state = ({
+            userData: {}
+        });
+
         this.state = this.getMeteorData();
         this.logout = this.logout.bind(this);
     }
 
     getMeteorData() {
         return { isAuthenticated: Meteor.userId() !== null };
-    }
-
-    componentDidMount() {
-        /*console.log("App | UserData: ");
-        console.log(this.props.userData);
-
-        if (this.props.userData != null && this.props.userData != undefined) {
-            if (this.props.userData.length == 0) {
-                console.log("Creando datos de usuario");
-
-                /*
-                Meteor.call("UserData.createUserData", (err, res) => {
-                    if (err) {
-                        alert(err);
-                    } else {
-                        currentUserData = UserData.find(
-                            { userId: currentUser._id }
-                        ).fetch();
-                    }
-                });
-            }
-        }*/
     }
 
     componentWillMount() {
@@ -48,26 +31,6 @@ class App extends Component {
     componentDidUpdate(prevProps, prevState) {
         if (!this.state.isAuthenticated) {
             this.props.history.push('/login');
-        }
-
-        console.log("App | DidUpdate | UserData: ");
-        console.log(this.props.userData);
-
-        if (this.props.userData != null && this.props.userData != undefined) {
-            if (this.props.userData.length == 0) {
-                console.log("Creando datos de usuario");
-
-                
-                Meteor.call("UserData.createUserData", (err, res) => {
-                    if (err) {
-                        alert(err);
-                    } else {
-                        currentUserData = UserData.find(
-                            { userId: currentUser._id }
-                        ).fetch();
-                    }
-                });
-            }
         }
     }
 
@@ -110,8 +73,8 @@ export default withTracker(
                 { userId: currentUser._id }
             ).fetch();
 
-            console.log("App | WithTracker | currentUserData: ");
-            console.log(currentUserData);
+            //console.log("App | WithTracker | currentUserData: ");
+            //console.log(currentUserData);
         }
 
         return {

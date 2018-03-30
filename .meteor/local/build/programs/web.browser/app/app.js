@@ -136,6 +136,8 @@ function (_Component) {
             error: err.reason
           });
         } else {
+          console.log(Meteor.userId());
+
           _this2.props.history.push('/');
         }
       });
@@ -151,9 +153,6 @@ function (_Component) {
       return React.createElement("div", {
         className: ""
       }, React.createElement("div", {
-        className: "alert alert-primary",
-        role: "alert"
-      }, "This is a primary alert\u2014check it out!"), React.createElement("div", {
         className: "modal-dialog"
       }, React.createElement("div", {
         className: "modal-content"
@@ -291,6 +290,8 @@ function (_Component) {
             error: err.reason
           });
         } else {
+          Meteor.call("UserData.createUserData", Meteor.userId());
+
           _this2.props.history.push('/login');
         }
       });
@@ -975,6 +976,9 @@ function (_Component) {
     var _this;
 
     _this = _Component.call(this, props) || this;
+    _this.state = {
+      userData: {}
+    };
     _this.state = _this.getMeteorData();
     _this.logout = _this.logout.bind((0, _assertThisInitialized2.default)(_this));
     return _this;
@@ -992,30 +996,6 @@ function (_Component) {
     return getMeteorData;
   }();
 
-  _proto.componentDidMount = function () {
-    function componentDidMount() {
-      /*console.log("App | UserData: ");
-      console.log(this.props.userData);
-        if (this.props.userData != null && this.props.userData != undefined) {
-          if (this.props.userData.length == 0) {
-              console.log("Creando datos de usuario");
-                /*
-              Meteor.call("UserData.createUserData", (err, res) => {
-                  if (err) {
-                      alert(err);
-                  } else {
-                      currentUserData = UserData.find(
-                          { userId: currentUser._id }
-                      ).fetch();
-                  }
-              });
-          }
-      }*/
-    }
-
-    return componentDidMount;
-  }();
-
   _proto.componentWillMount = function () {
     function componentWillMount() {
       if (!this.state.isAuthenticated) {
@@ -1030,24 +1010,6 @@ function (_Component) {
     function componentDidUpdate(prevProps, prevState) {
       if (!this.state.isAuthenticated) {
         this.props.history.push('/login');
-      }
-
-      console.log("App | DidUpdate | UserData: ");
-      console.log(this.props.userData);
-
-      if (this.props.userData != null && this.props.userData != undefined) {
-        if (this.props.userData.length == 0) {
-          console.log("Creando datos de usuario");
-          Meteor.call("UserData.createUserData", function (err, res) {
-            if (err) {
-              alert(err);
-            } else {
-              currentUserData = UserData.find({
-                userId: currentUser._id
-              }).fetch();
-            }
-          });
-        }
       }
     }
 
@@ -1099,9 +1061,8 @@ module.exportDefault(withTracker(function () {
     //console.log("Searching for data of " + currentUser._id);
     currentUserData = UserData.find({
       userId: currentUser._id
-    }).fetch();
-    console.log("App | WithTracker | currentUserData: ");
-    console.log(currentUserData);
+    }).fetch(); //console.log("App | WithTracker | currentUserData: ");
+    //console.log(currentUserData);
   }
 
   return {
@@ -2048,18 +2009,13 @@ function (_Component) {
       Meteor.call("UserData.addBet", eventId, prob1, prob2, probT, bet1, bet2, betT, eR1, eR2, eRt, function (err, res) {
         if (err) {
           alert(err);
-        } else {//alert("Bet created!");
+        } else {
+          alert("Bet created!");
         }
       });
     }
 
     return AddBet;
-  }();
-
-  _proto.componentDidMount = function () {
-    function componentDidMount() {}
-
-    return componentDidMount;
   }();
 
   _proto.loadCategoriesList = function () {

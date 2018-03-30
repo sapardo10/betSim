@@ -33,12 +33,9 @@ class MainPage extends Component {
             if (err) {
                 alert(err);
             } else {
-                //alert("Bet created!");
+                alert("Bet created!");
             }
         });
-    }
-
-    componentDidMount() {
     }
 
     loadCategoriesList() {

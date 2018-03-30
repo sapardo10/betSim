@@ -23,6 +23,9 @@ class Signup extends Component {
                     error: err.reason
                 });
             } else {
+                Meteor.call(
+                    "UserData.createUserData", Meteor.userId()
+                );
                 this.props.history.push('/login');
             }
         });

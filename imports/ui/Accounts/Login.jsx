@@ -21,6 +21,7 @@ class Login extends Component {
                     error: err.reason
                 });
             } else {
+                console.log(Meteor.userId());
                 this.props.history.push('/');
             }
         });
@@ -32,9 +33,6 @@ class Login extends Component {
 
         return (
             <div className="">
-                <div className="alert alert-primary" role="alert">
-                    This is a primary alert—check it out!
-</div>
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
