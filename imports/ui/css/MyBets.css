@@ -1,0 +1,13 @@
+.myEvents{
+    display: none;
+    max-width: 95%;
+}
+
+:target{
+    display: block;
+}
+
+.Live{
+    color: springgreen;
+    font-weight: bold;
+}

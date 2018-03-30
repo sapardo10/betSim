@@ -1,0 +1,21 @@
+.myCard  p, h4{
+    margin-bottom: 0 !important;
+}
+
+.myCardButton{
+    width: 100%;
+}
+
+.myButtonGroup{
+    width: 100%;
+}
+
+.myButtonOnGroup{
+    padding-bottom: 0;
+    padding-top: 0;
+    width: 100%;
+}
+
+.subTitle{
+    color: dimgray;
+}
