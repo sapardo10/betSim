@@ -10,11 +10,11 @@ class EventBetCard extends Component {
         super(props);
 
         this.state = {
-            colSize: "col-md-4"
+            colSize: "col-md-3"
         };
     }
 
-    AddBet(b1, b2, bT, eR1, eR2, eRt){
+    AddBet(b1, b2, bT, eR1, eR2, eRt) {
         let eInfo = this.props.eventInfo[0];
         //console.log( "EventBetCard earnings: " + eR1 + "-" + eR2 + "-" + eRt);
 
@@ -33,6 +33,7 @@ class EventBetCard extends Component {
                 let nColSize = "col"
 
                 let width = window.innerWidth;
+                console.log("EventBetCard | Width: " + width);
 
                 if (width >= 1500) {
                     nColSize = "col-md-3";
@@ -53,26 +54,53 @@ class EventBetCard extends Component {
 
         let res = "Loading...";
         let bInfo = this.props.eventBetsInfo;
+        let eInfo = this.props.eventInfo;
+        eInfo = eInfo[0];
 
+        let State = eInfo.State;
+        let Team1R = eInfo.Team1R;
+        let Team2R = eInfo.Team2R;
         //console.log("Bets of event: ");
         //console.log(bInfo);
+        //console.log(eInfo);
+        //console.log("LoadEventBets | Event state: " + State);
+        //console.log("LoadEventBets | Event results: " + Team1R + " - " + Team2R);
 
         res = []
         for (let i = 0; i < bInfo.length; i++) {
             let e = bInfo[i];
+            let T1R = "warning";
+            let T2R = "warning";
+            let TieR = "warning";
+
+            if(State == "FINISHED"){
+                if(Team1R > Team2R){
+                    T1R = "success";
+                    T2R = "danger";
+                    TieR = "danger";
+                }else if (Team1R < Team2R){
+                    T1R = "danger";
+                    T2R = "success";
+                    TieR = "danger";
+                }else{
+                    T1R = "danger";
+                    T2R = "danger";
+                    TieR = "success";
+                }
+            }
 
             res.push(
-                <div key={"Bet#" + (i+1) + "Of" + this.props.eventInfo.Name} className="row myBetGroup">
-                    <div className="btn-group myButtonGroup">
+                <div key={"Bet#" + (i + 1) + "Of" + this.props.eventInfo.Name} className="row myBetGroup">
+                    <div className="btn-group myButtonGroup container">
                         <span className="badge badge-warning myBetTitle">{this.getFee(e.Prob1)}</span>
                         <span className="badge badge-warning myBetTitle">{this.getFee(e.ProbT)}</span>
                         <span className="badge badge-warning myBetTitle">{this.getFee(e.Prob2)}</span>
                     </div>
 
-                    <div className="btn-group myButtonGroup">
-                        <span className="badge badge-warning myBetAmount">{e.Team1}</span>
-                        <span className="badge badge-warning myBetAmount">{e.Tie}</span>
-                        <span className="badge badge-warning myBetAmount">{e.Team2}</span>
+                    <div className="btn-group myButtonGroup container">
+                        <span className={"badge myBetAmount badge-" + T1R}>{e.Team1}</span>
+                        <span className={"badge myBetAmount badge-" + TieR}>{e.Tie}</span>
+                        <span className={"badge myBetAmount badge-" + T2R}>{e.Team2}</span>
                     </div>
                 </div>
 
@@ -81,9 +109,13 @@ class EventBetCard extends Component {
 
         return res;
     }
+    
+    GenerateEventPage(eId){
+        this.props.GenerateEventPage(eId);
+    }
 
     render() {
-        
+
         const txtLoading = "Loading...";
         let Name = txtLoading;
         let Place = txtLoading;
@@ -94,6 +126,9 @@ class EventBetCard extends Component {
         let Prob1 = txtLoading;
         let Tie = txtLoading;
         let Prob2 = txtLoading;
+        let State = txtLoading;
+        let Team1R = 0;
+        let Team2R = 0;
 
         let eInfo = this.props.eventInfo;
         let bInfo = this.props.eventBetsInfo;
@@ -103,6 +138,11 @@ class EventBetCard extends Component {
         //console.log("EventBetCard | Event info: ");
         //console.log(eInfo);
         let modal = "Loading event info...";
+        let fDate = <h5 className="card-title subTitle">{eInfo.Date}</h5>;
+        let isOver = "";
+        let showResult = "none";
+        let team1RI = "danger";
+        let team2RI = "danger";
 
         if (eInfo != null && eInfo != undefined && eInfo.length > 0) {
             eInfo = eInfo[0];
@@ -118,15 +158,33 @@ class EventBetCard extends Component {
             Prob1 = eInfo.Prob1;
             Tie = eInfo.Tie;
             Prob2 = eInfo.Prob2;
-            
-            modal = <AddBetModal eventInfo={eInfo} fromW="betCard" AddBet={(b1, b2, bT, eR1, eR2, eRt) => this.AddBet(b1, b2, bT, eR1, eR2, eRt)}/>;
+            State = eInfo.State;
+            Team1R = eInfo.Team1R;
+            Team2R = eInfo.Team2R;
+
+            modal = <AddBetModal eventInfo={eInfo} fromW="betCard" AddBet={(b1, b2, bT, eR1, eR2, eRt) => this.AddBet(b1, b2, bT, eR1, eR2, eRt)} />;
 
             bInfo.map(e => {
                 actBetsEarnings += e.Earnings;
             });
-           //console.log(actBetsEarnings);            
-        }
+            //console.log(actBetsEarnings);           
 
+            if (State == "STARTED") {
+                fDate = <h5 className="card-title txtLive">Now live!</h5>;
+            } else if (State == "FINISHED") {
+                fDate = <h5 className="card-title txtFinished">The event is over!</h5>;
+                isOver = " none";
+                showResult = "";
+            }
+
+            if(Team1R > Team2R){
+                team1RI = "success";
+            }else if (Team1R < Team2R){
+                team1RI = "success";
+            }else{
+                team1RI = "warning";
+            }
+        }
         return (
             <div id={Name} className={this.state.colSize + " myBetCard"}>
                 <div className="card myCard">
@@ -134,7 +192,7 @@ class EventBetCard extends Component {
                     <div className="card-body">
                         <h4 className="card-title">{Name}</h4>
                         <h5 className="card-title subTitle">{Place}</h5>
-                        <h5 className="card-title subTitle">{Date}</h5>
+                        {fDate}
 
                         <div className="btn-group myButtonGroup">
                             <span className="badge badge-primary myButtonGroup">{Team1}</span>
@@ -142,10 +200,15 @@ class EventBetCard extends Component {
                             <span className="badge badge-primary myButtonGroup">{Team2}</span>
                         </div>
 
-                        <div className="btn-group myButtonGroup" role="group" aria-label="Basic example">
+                        <div className="btn-group myButtonGroup" role="group" aria-label="Basic example" style={{ display: isOver }}>
                             <button type="button" className="btn btn-primary myButtonOnGroup" data-toggle="modal" data-target={"#Add" + Name + "betCardBetModal"}>{"" + this.getFee(Prob1)}</button>
                             <button type="button" className="btn btn-secondary myButtonOnGroup" data-toggle="modal" data-target={"#Add" + Name + "betCardBetModal"}>{"" + this.getFee(Tie)}</button>
                             <button type="button" className="btn btn-primary myButtonOnGroup" data-toggle="modal" data-target={"#Add" + Name + "betCardBetModal"}>{"" + this.getFee(Prob2)}</button>
+                        </div>
+
+                        <div className="btn-group myButtonGroup" role="group" aria-label="Basic example" style={{ display: showResult }}>
+                            <span className={"badge myButtonGroup badge-" + team1RI}>{eInfo.Team1R}</span>
+                            <span className={"badge myButtonGroup badge-" + team2RI}>{eInfo.Team2R}</span>
                         </div>
 
                         <hr className="my-4" />
@@ -155,7 +218,7 @@ class EventBetCard extends Component {
 
                         <hr className="my-4" />
 
-                        <button className="btn btn-outline-info myCardButton" type="submit">More info</button>
+                        <button onClick={() => this.GenerateEventPage(eInfo._id)} className="btn btn-outline-info myCardButton" type="submit">More info</button>
                     </div>
                 </div>
                 {modal}

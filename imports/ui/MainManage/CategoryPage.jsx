@@ -52,7 +52,7 @@ class CategoryPage extends Component {
         res = actEvents.map(e => (
             //console.log("CategoryPage | loadEventsCards | Event: " + e),
             //console.log(e),
-            <EventCard key={e.Name + "Card"} eventInfo={e} AddBet={(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt) => this.props.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt)} />
+            <EventCard key={e.Name + "Card"} eventInfo={e} AddBet={(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt) => this.props.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt)} GenerateEventPage={(eId) => this.props.GenerateEventPage(eId)}/>
         ));
 
         return res;

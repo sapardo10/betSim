@@ -60,9 +60,9 @@
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/packages/modules.js?hash=1ce9199493db92b6fee70e7019fded0395de08b2",
-      "size": 1481619,
-      "hash": "1ce9199493db92b6fee70e7019fded0395de08b2"
+      "url": "/packages/modules.js?hash=64c302faa969b8210c5dd71717c74bec96625566",
+      "size": 2089212,
+      "hash": "64c302faa969b8210c5dd71717c74bec96625566"
     },
     {
       "path": "packages/ecmascript-runtime.js",
@@ -675,11 +675,11 @@
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/app/app.js?hash=e6b8c7a00c6d6e6d57755d60d36c304d6cc1598d",
+      "url": "/app/app.js?hash=049354d3854255cacfe98d25f8e04357e661a66b",
       "sourceMap": "app/app.js.map",
-      "sourceMapUrl": "/app/e6b8c7a00c6d6e6d57755d60d36c304d6cc1598d.map",
-      "size": 97832,
-      "hash": "e6b8c7a00c6d6e6d57755d60d36c304d6cc1598d"
+      "sourceMapUrl": "/app/049354d3854255cacfe98d25f8e04357e661a66b.map",
+      "size": 134186,
+      "hash": "049354d3854255cacfe98d25f8e04357e661a66b"
     },
     {
       "path": "packages/service-configuration.js",
@@ -747,6 +747,15 @@
       "hash": "04a7db72f92e637701b552fafb3072852f203f11"
     },
     {
+      "path": "app/img/Favicon_1.png",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/img/Favicon_1.png",
+      "size": 2674,
+      "hash": "365c304e6000e641254b825c24ebbbbd61529b2f"
+    },
+    {
       "path": "app/img/Football_1.png",
       "where": "client",
       "type": "asset",
@@ -756,10 +765,37 @@
       "hash": "b61fd27b2cea2adf31e44c260578dbcb44dcc63d"
     },
     {
+      "path": "app/img/Login.jpg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/img/Login.jpg",
+      "size": 1721810,
+      "hash": "4e4848cd34b1c3658dc3c2331aa5562b00305ef9"
+    },
+    {
+      "path": "app/img/favicon-16x16.png",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/img/favicon-16x16.png",
+      "size": 936,
+      "hash": "f71aebe266ee33114666171760789de16b29534b"
+    },
+    {
+      "path": "app/img/favicon-32x32.png",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/img/favicon-32x32.png",
+      "size": 2609,
+      "hash": "da55168fd10b05e311ba3aed22565a0dcc25076e"
+    },
+    {
       "path": "head.html",
       "where": "internal",
       "type": "head",
-      "hash": "43225143c07b51f2c0e71b268a0c1dbea8812362"
+      "hash": "0732207ddab96016b585336070ed534fbf313b0b"
     }
   ]
 }

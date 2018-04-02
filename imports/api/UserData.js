@@ -11,22 +11,23 @@ if (Meteor.isServer) {
 
         if (!this.userId) {
             return this.ready();
-          }
-        
-          return UserData.find({
+        }
+
+        return UserData.find({
             userId: this.userId
-          }, {
-            fields: UserData.publicFields
-          });
+        }, {
+                fields: UserData.publicFields
+            });
     });
 }
 
 Meteor.methods({
-    "UserData.createUserData"(){
+    "UserData.createUserData"() {
         UserData.insert({
             type: "USER",
             userId: this.userId,
-            coins: 1000
+            coins: 1000,
+            InBet: 0
         });
     },
     "UserData.getAll"() {
@@ -40,8 +41,48 @@ Meteor.methods({
         check(userId, String);
 
         let res = UserData.find(
-            { userId: userId }           
+            { userId: userId }
         ).fetch();
         return res;
-    }    
+    },
+    "UserData.updateCoins"(aUserId, e1) {
+        UserData.update(
+            { userId: aUserId },
+            {
+                $inc: {
+                    coins: e1
+                }
+            }
+        );
+    },
+    "UserData.removeBetCoins"(aUserId) {
+        UserData.update(
+            { userId: aUserId },
+            {
+                $set: { InBet: 0 }
+            }
+        );
+    },
+    "UserData.addCoins"(aUserId, numCoins) {        
+        UserData.update(
+            { userId: aUserId },
+            {
+                $inc: {
+                    coins: numCoins
+                }
+            }
+        );
+    },
+    "UserData.removeNewBetCoins"(numCoins) {        
+        UserData.update(
+            { userId: this.userId },
+            {
+                $inc: {
+                    coins: -numCoins,
+                    InBet: numCoins
+                }
+            }
+        );
+    }
+    
 });

@@ -1,0 +1,34 @@
+
+.myAdminButton{
+  margin-right: 10px;
+}
+
+.myEventModal {
+  margin: auto;
+  max-width: 100%;
+  width: 80%;
+}
+
+.rightButtons{
+  float: right;
+}
+
+
+/* Text */
+.txtLive{
+  color: #28a745;
+  font-weight: bold;
+  text-align: center;
+}
+
+.txtScore{
+  color: dodgerblue;
+  font-weight: bold;
+  text-align: center;
+}
+
+.txtWinner{
+  color: #28a745;
+  font-weight: bold;
+  text-align: center;
+}

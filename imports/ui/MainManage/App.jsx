@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import { withHistory } from 'react-router-dom';
 import { withTracker } from "meteor/react-meteor-data";
 
+import AddCoinsModal from './AddCoinsModal.jsx';
 import MainPage from './MainPage.jsx';
 
 import { UserData } from "../../api/UserData";
+
+import "../css/App.css";
 
 class App extends Component {
     constructor(props) {
@@ -16,6 +19,7 @@ class App extends Component {
 
         this.state = this.getMeteorData();
         this.logout = this.logout.bind(this);
+        this.addCoins = this.addCoins.bind(this);
     }
 
     getMeteorData() {
@@ -45,11 +49,18 @@ class App extends Component {
         });
     }
 
+    addCoins(numCoins){
+        console.log("Adding coins from App | # coins: " + numCoins);
+        
+        Meteor.call("UserData.addCoins", this.props.user._id, numCoins);
+    }
+
     render() {
 
         return (
             <div id="App">
                 {this.props.user && this.props.userData ? <MainPage logout={this.logout} user={this.props.user} userData={this.props.userData[0]} /> : "Loading user settings..."}
+                <AddCoinsModal addCoins={(numC) => this.addCoins(numC)}/>
             </div>
         );
     }

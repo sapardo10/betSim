@@ -16,6 +16,22 @@
     width: 100%;
 }
 
-.subTitle{
-    color: dimgray;
+.txtLive{
+  color: greenyellow;
+  font-weight: bold;
+}
+
+.txtFinished{
+  color: red;
+  font-weight: bold;
+}
+
+.noBotMargin{
+    margin-bottom: 0;
+}
+
+.myLargeButton{
+    padding-top: 0;
+    padding-bottom: 0;
+    width: 100%;
 }

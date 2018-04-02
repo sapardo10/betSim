@@ -104,6 +104,7 @@ module.watch(require("meteor/react-meteor-data"), {
     createContainer = v;
   }
 }, 2);
+module.watch(require("../css/Login.css"));
 
 var Login =
 /*#__PURE__*/
@@ -136,8 +137,7 @@ function (_Component) {
             error: err.reason
           });
         } else {
-          console.log(Meteor.userId());
-
+          //console.log(Meteor.userId());
           _this2.props.history.push('/');
         }
       });
@@ -151,8 +151,20 @@ function (_Component) {
       var error = this.state.error;
       console.log(error);
       return React.createElement("div", {
-        className: ""
+        id: "loginDiv",
+        className: "loginDiv verticalAlignParent",
+        style: {
+          backgroundImage: "img/Login.jpg"
+        }
       }, React.createElement("div", {
+        className: "verticalAlignSon"
+      }, React.createElement("div", {
+        className: ""
+      }, React.createElement("h1", {
+        className: "text-center myMainTitle"
+      }, "Welcome to BetSimulator!"), React.createElement("h5", {
+        className: "text-center mySubTitle"
+      }, "The best bet simulator ever!"), React.createElement("div", {
         className: "modal-dialog"
       }, React.createElement("div", {
         className: "modal-content"
@@ -200,7 +212,7 @@ function (_Component) {
         style: {
           borderTop: 0
         }
-      }))));
+      }))))));
     }
 
     return render;
@@ -316,7 +328,7 @@ function (_Component) {
       }, "Sign up")), React.createElement("div", {
         className: "modal-body"
       }, error.length > 0 ? React.createElement("div", {
-        className: "alert alert-danger fade in"
+        className: "alert alert-danger"
       }, error) : '', React.createElement("form", {
         id: "login-form",
         className: "form col-md-12 center-block",
@@ -589,6 +601,191 @@ AddBetModal.propTypes = {
   fromW: PropTypes.string.isRequired
 };
 module.exportDefault(AddBetModal);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"AddCoinsModal.jsx":function(require,exports,module){
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                     //
+// imports/ui/MainManage/AddCoinsModal.jsx                                                                             //
+//                                                                                                                     //
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                       //
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+
+var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
+
+var React, Component;
+module.watch(require("react"), {
+  "default": function (v) {
+    React = v;
+  },
+  Component: function (v) {
+    Component = v;
+  }
+}, 0);
+module.watch(require("../css/AddCoinsModal.css"));
+
+var AddCoinsModal =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2.default)(AddCoinsModal, _Component);
+
+  function AddCoinsModal(props) {
+    var _this;
+
+    _this = _Component.call(this, props) || this;
+    _this.state = {
+      txtCardNumber: "",
+      txtCode: 0,
+      txtMonth: 0,
+      txtYear: 0,
+      numCoins: 0
+    };
+    _this.addCoins = _this.addCoins.bind((0, _assertThisInitialized2.default)(_this));
+    _this.handleChange = _this.handleChange.bind((0, _assertThisInitialized2.default)(_this));
+    return _this;
+  }
+
+  var _proto = AddCoinsModal.prototype;
+
+  _proto.addCoins = function () {
+    function addCoins() {
+      var coins = $('#coinsSelector')[0].options.selectedIndex;
+      var finalNum = 0;
+
+      if (coins == 0) {
+        finalNum = 100;
+      } else if (coins == 1) {
+        finalNum = 510;
+      } else if (coins == 2) {
+        finalNum = 1050;
+      }
+
+      this.props.addCoins(finalNum);
+    }
+
+    return addCoins;
+  }();
+
+  _proto.handleChange = function () {
+    function handleChange(event) {
+      var _setState;
+
+      this.setState((_setState = {}, _setState[event.target.id] = event.target.value, _setState));
+    }
+
+    return handleChange;
+  }();
+
+  _proto.render = function () {
+    function render() {
+      var _this2 = this;
+
+      return React.createElement("div", {
+        id: "AddCoins",
+        className: "modal",
+        tabIndex: "-1",
+        role: "dialog"
+      }, React.createElement("div", {
+        className: "modal-dialog",
+        role: "document"
+      }, React.createElement("div", {
+        className: "modal-content"
+      }, React.createElement("div", {
+        className: "modal-header"
+      }, React.createElement("h5", {
+        className: "modal-title"
+      }, "Add more coins!"), React.createElement("button", {
+        type: "button",
+        className: "close",
+        "data-dismiss": "modal",
+        "aria-label": "Close"
+      }, React.createElement("span", {
+        "aria-hidden": "true"
+      }, "\xD7"))), React.createElement("div", {
+        className: "modal-body"
+      }, React.createElement("div", {
+        className: "form-group"
+      }, React.createElement("div", {
+        className: "input-group mb-2"
+      }, React.createElement("div", {
+        className: "input-group-prepend"
+      }, React.createElement("div", {
+        className: "input-group-text"
+      }, "Card # : ")), React.createElement("input", {
+        type: "text",
+        className: "form-control",
+        id: "txtCardNumber",
+        placeholder: "XXXX-XXXX-XXXX-XXXX",
+        value: this.state.txtCardNumber,
+        onChange: this.handleChange
+      }))), React.createElement("div", {
+        className: "form-row bottomPadding"
+      }, React.createElement("div", {
+        className: "form-group col-md-4"
+      }, React.createElement("label", null, "Security code: "), React.createElement("input", {
+        type: "number",
+        className: "form-control",
+        id: "txtCode",
+        placeholder: "",
+        value: this.state.txtCode,
+        onChange: this.handleChange
+      })), React.createElement("div", {
+        className: "form-group col-md-4"
+      }, React.createElement("label", null, "Month"), React.createElement("input", {
+        type: "number",
+        min: "0",
+        max: "12",
+        step: "1",
+        className: "form-control",
+        id: "txtMonth",
+        placeholder: "",
+        value: this.state.txtMonth,
+        onChange: this.handleChange
+      })), React.createElement("div", {
+        className: "form-group col-md-4"
+      }, React.createElement("label", null, "Year"), React.createElement("input", {
+        type: "number",
+        min: "2018",
+        step: "1",
+        className: "form-control",
+        id: "txtYear",
+        placeholder: "",
+        value: this.state.txtYear,
+        onChange: this.handleChange
+      }))), React.createElement("div", {
+        className: "form-group"
+      }, React.createElement("label", {
+        htmlFor: "coinsSelector"
+      }, "Select your coins package:"), React.createElement("select", {
+        className: "form-control",
+        id: "coinsSelector"
+      }, React.createElement("option", null, "100 / $10.000"), React.createElement("option", null, "510 / $50.000"), React.createElement("option", null, "1050 / $100.000")))), React.createElement("div", {
+        className: "modal-footer"
+      }, React.createElement("button", {
+        type: "button",
+        className: "btn btn-secondary",
+        "data-dismiss": "modal"
+      }, "Close"), React.createElement("button", {
+        type: "button",
+        className: "btn btn-success",
+        "data-dismiss": "modal",
+        onClick: function () {
+          return _this2.addCoins();
+        }
+      }, "Add coins!")))));
+    }
+
+    return render;
+  }();
+
+  return AddCoinsModal;
+}(Component);
+
+module.exportDefault(AddCoinsModal);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 },"AddEventModal.jsx":function(require,exports,module){
@@ -954,18 +1151,25 @@ module.watch(require("meteor/react-meteor-data"), {
     withTracker = v;
   }
 }, 2);
+var AddCoinsModal;
+module.watch(require("./AddCoinsModal.jsx"), {
+  "default": function (v) {
+    AddCoinsModal = v;
+  }
+}, 3);
 var MainPage;
 module.watch(require("./MainPage.jsx"), {
   "default": function (v) {
     MainPage = v;
   }
-}, 3);
+}, 4);
 var UserData;
 module.watch(require("../../api/UserData"), {
   UserData: function (v) {
     UserData = v;
   }
-}, 4);
+}, 5);
+module.watch(require("../css/App.css"));
 
 var App =
 /*#__PURE__*/
@@ -981,6 +1185,7 @@ function (_Component) {
     };
     _this.state = _this.getMeteorData();
     _this.logout = _this.logout.bind((0, _assertThisInitialized2.default)(_this));
+    _this.addCoins = _this.addCoins.bind((0, _assertThisInitialized2.default)(_this));
     return _this;
   }
 
@@ -1033,15 +1238,30 @@ function (_Component) {
     return logout;
   }();
 
+  _proto.addCoins = function () {
+    function addCoins(numCoins) {
+      console.log("Adding coins from App | # coins: " + numCoins);
+      Meteor.call("UserData.addCoins", this.props.user._id, numCoins);
+    }
+
+    return addCoins;
+  }();
+
   _proto.render = function () {
     function render() {
+      var _this3 = this;
+
       return React.createElement("div", {
         id: "App"
       }, this.props.user && this.props.userData ? React.createElement(MainPage, {
         logout: this.logout,
         user: this.props.user,
         userData: this.props.userData[0]
-      }) : "Loading user settings...");
+      }) : "Loading user settings...", React.createElement(AddCoinsModal, {
+        addCoins: function (numC) {
+          return _this3.addCoins(numC);
+        }
+      }));
     }
 
     return render;
@@ -1154,7 +1374,13 @@ function (_Component) {
       }, React.createElement("a", {
         id: "coins-info",
         className: "nav-link"
-      }, "In bet: 0"))), React.createElement("button", {
+      }, "In bet: ", this.props.InBet)), React.createElement("li", null, React.createElement("button", {
+        onClick: this.props.addcoins,
+        className: "btn btn-outline-success my-2 my-sm-0",
+        type: "button",
+        "data-toggle": "modal",
+        "data-target": "#AddCoins"
+      }, "Add coins"))), React.createElement("button", {
         onClick: this.props.logout,
         className: "btn btn-outline-danger my-2 my-sm-0",
         type: "submit"
@@ -1279,6 +1505,9 @@ function (_Component) {
             eventInfo: e,
             AddBet: function (eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt) {
               return _this2.props.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt);
+            },
+            GenerateEventPage: function (eId) {
+              return _this2.props.GenerateEventPage(eId);
             }
           })
         );
@@ -1379,7 +1608,7 @@ function (_Component) {
 
     _this = _Component.call(this, props) || this;
     _this.state = {
-      colSize: "col-md-4"
+      colSize: "col-md-3"
     };
     return _this;
   }
@@ -1413,6 +1642,7 @@ function (_Component) {
         window.addEventListener('resize', function () {
           var nColSize = "col";
           var width = window.innerWidth;
+          console.log("EventBetCard | Width: " + width);
 
           if (width >= 1500) {
             nColSize = "col-md-3";
@@ -1437,18 +1667,46 @@ function (_Component) {
       //console.log("EventBetCard | Bets: ");
       //console.log(this.props.eventBetsInfo);
       var res = "Loading...";
-      var bInfo = this.props.eventBetsInfo; //console.log("Bets of event: ");
+      var bInfo = this.props.eventBetsInfo;
+      var eInfo = this.props.eventInfo;
+      eInfo = eInfo[0];
+      var State = eInfo.State;
+      var Team1R = eInfo.Team1R;
+      var Team2R = eInfo.Team2R; //console.log("Bets of event: ");
       //console.log(bInfo);
+      //console.log(eInfo);
+      //console.log("LoadEventBets | Event state: " + State);
+      //console.log("LoadEventBets | Event results: " + Team1R + " - " + Team2R);
 
       res = [];
 
       for (var i = 0; i < bInfo.length; i++) {
         var e = bInfo[i];
+        var T1R = "warning";
+        var T2R = "warning";
+        var TieR = "warning";
+
+        if (State == "FINISHED") {
+          if (Team1R > Team2R) {
+            T1R = "success";
+            T2R = "danger";
+            TieR = "danger";
+          } else if (Team1R < Team2R) {
+            T1R = "danger";
+            T2R = "success";
+            TieR = "danger";
+          } else {
+            T1R = "danger";
+            T2R = "danger";
+            TieR = "success";
+          }
+        }
+
         res.push(React.createElement("div", {
           key: "Bet#" + (i + 1) + "Of" + this.props.eventInfo.Name,
           className: "row myBetGroup"
         }, React.createElement("div", {
-          className: "btn-group myButtonGroup"
+          className: "btn-group myButtonGroup container"
         }, React.createElement("span", {
           className: "badge badge-warning myBetTitle"
         }, this.getFee(e.Prob1)), React.createElement("span", {
@@ -1456,13 +1714,13 @@ function (_Component) {
         }, this.getFee(e.ProbT)), React.createElement("span", {
           className: "badge badge-warning myBetTitle"
         }, this.getFee(e.Prob2))), React.createElement("div", {
-          className: "btn-group myButtonGroup"
+          className: "btn-group myButtonGroup container"
         }, React.createElement("span", {
-          className: "badge badge-warning myBetAmount"
+          className: "badge myBetAmount badge-" + T1R
         }, e.Team1), React.createElement("span", {
-          className: "badge badge-warning myBetAmount"
+          className: "badge myBetAmount badge-" + TieR
         }, e.Tie), React.createElement("span", {
-          className: "badge badge-warning myBetAmount"
+          className: "badge myBetAmount badge-" + T2R
         }, e.Team2))));
       }
 
@@ -1470,6 +1728,14 @@ function (_Component) {
     }
 
     return loadEventBets;
+  }();
+
+  _proto.GenerateEventPage = function () {
+    function GenerateEventPage(eId) {
+      this.props.GenerateEventPage(eId);
+    }
+
+    return GenerateEventPage;
   }();
 
   _proto.render = function () {
@@ -1486,12 +1752,22 @@ function (_Component) {
       var Prob1 = txtLoading;
       var Tie = txtLoading;
       var Prob2 = txtLoading;
+      var State = txtLoading;
+      var Team1R = 0;
+      var Team2R = 0;
       var eInfo = this.props.eventInfo;
       var bInfo = this.props.eventBetsInfo;
       var actBetsEarnings = 0; //console.log("EventBetCard | Event info: ");
       //console.log(eInfo);
 
       var modal = "Loading event info...";
+      var fDate = React.createElement("h5", {
+        className: "card-title subTitle"
+      }, eInfo.Date);
+      var isOver = "";
+      var showResult = "none";
+      var team1RI = "danger";
+      var team2RI = "danger";
 
       if (eInfo != null && eInfo != undefined && eInfo.length > 0) {
         eInfo = eInfo[0]; //console.log(eInfo);
@@ -1505,6 +1781,9 @@ function (_Component) {
         Prob1 = eInfo.Prob1;
         Tie = eInfo.Tie;
         Prob2 = eInfo.Prob2;
+        State = eInfo.State;
+        Team1R = eInfo.Team1R;
+        Team2R = eInfo.Team2R;
         modal = React.createElement(AddBetModal, {
           eventInfo: eInfo,
           fromW: "betCard",
@@ -1514,7 +1793,27 @@ function (_Component) {
         });
         bInfo.map(function (e) {
           actBetsEarnings += e.Earnings;
-        }); //console.log(actBetsEarnings);            
+        }); //console.log(actBetsEarnings);           
+
+        if (State == "STARTED") {
+          fDate = React.createElement("h5", {
+            className: "card-title txtLive"
+          }, "Now live!");
+        } else if (State == "FINISHED") {
+          fDate = React.createElement("h5", {
+            className: "card-title txtFinished"
+          }, "The event is over!");
+          isOver = " none";
+          showResult = "";
+        }
+
+        if (Team1R > Team2R) {
+          team1RI = "success";
+        } else if (Team1R < Team2R) {
+          team1RI = "success";
+        } else {
+          team1RI = "warning";
+        }
       }
 
       return React.createElement("div", {
@@ -1532,9 +1831,7 @@ function (_Component) {
         className: "card-title"
       }, Name), React.createElement("h5", {
         className: "card-title subTitle"
-      }, Place), React.createElement("h5", {
-        className: "card-title subTitle"
-      }, Date), React.createElement("div", {
+      }, Place), fDate, React.createElement("div", {
         className: "btn-group myButtonGroup"
       }, React.createElement("span", {
         className: "badge badge-primary myButtonGroup"
@@ -1545,7 +1842,10 @@ function (_Component) {
       }, Team2)), React.createElement("div", {
         className: "btn-group myButtonGroup",
         role: "group",
-        "aria-label": "Basic example"
+        "aria-label": "Basic example",
+        style: {
+          display: isOver
+        }
       }, React.createElement("button", {
         type: "button",
         className: "btn btn-primary myButtonOnGroup",
@@ -1561,13 +1861,27 @@ function (_Component) {
         className: "btn btn-primary myButtonOnGroup",
         "data-toggle": "modal",
         "data-target": "#Add" + Name + "betCardBetModal"
-      }, "" + this.getFee(Prob2))), React.createElement("hr", {
+      }, "" + this.getFee(Prob2))), React.createElement("div", {
+        className: "btn-group myButtonGroup",
+        role: "group",
+        "aria-label": "Basic example",
+        style: {
+          display: showResult
+        }
+      }, React.createElement("span", {
+        className: "badge myButtonGroup badge-" + team1RI
+      }, eInfo.Team1R), React.createElement("span", {
+        className: "badge myButtonGroup badge-" + team2RI
+      }, eInfo.Team2R)), React.createElement("hr", {
         className: "my-4"
       }), React.createElement("h5", {
         className: "card-title"
       }, "Bets..."), this.loadEventBets(), React.createElement("hr", {
         className: "my-4"
       }), React.createElement("button", {
+        onClick: function () {
+          return _this3.GenerateEventPage(eInfo._id);
+        },
         className: "btn btn-outline-info myCardButton",
         type: "submit"
       }, "More info"))), modal);
@@ -1631,7 +1945,7 @@ function (_Component) {
 
     _this = _Component.call(this, props) || this;
     _this.state = {
-      colSize: "col-md-4"
+      colSize: "col-md-3"
     };
     return _this;
   }
@@ -1656,6 +1970,7 @@ function (_Component) {
         window.addEventListener('resize', function () {
           var nColSize = "col";
           var width = window.innerWidth;
+          console.log("EventCard | Width: " + width);
 
           if (width >= 1500) {
             nColSize = "col-md-3";
@@ -1684,12 +1999,48 @@ function (_Component) {
     return getFee;
   }();
 
+  _proto.GenerateEventPage = function () {
+    function GenerateEventPage(eId) {
+      this.props.GenerateEventPage(eId);
+    }
+
+    return GenerateEventPage;
+  }();
+
   _proto.render = function () {
     function render() {
       var _this3 = this;
 
       var eInfo = this.props.eventInfo;
       var modal = "";
+      var fDate = React.createElement("h5", {
+        className: "card-title subTitle"
+      }, eInfo.Date);
+      var isOver = "";
+      var showResult = "none";
+      var team1RI = "danger";
+      var team2RI = "danger";
+
+      if (eInfo.State == "STARTED") {
+        fDate = React.createElement("h5", {
+          className: "card-title txtLive"
+        }, "Now live!");
+      } else if (eInfo.State == "FINISHED") {
+        fDate = React.createElement("h5", {
+          className: "card-title txtFinished"
+        }, "The event is over!");
+        isOver = " none";
+        showResult = "";
+      }
+
+      if (eInfo.Team1R > eInfo.Team2R) {
+        team1RI = "success";
+      } else if (eInfo.Team1R < eInfo.Team2R) {
+        team1RI = "success";
+      } else {
+        team1RI = "warning";
+      }
+
       modal = React.createElement(AddBetModal, {
         eventInfo: eInfo,
         fromW: "eventCard",
@@ -1711,10 +2062,8 @@ function (_Component) {
       }, React.createElement("h4", {
         className: "card-title"
       }, eInfo.Name), React.createElement("h5", {
-        className: "card-title subTitle"
-      }, eInfo.Place), React.createElement("h5", {
-        className: "card-title subTitle"
-      }, eInfo.Date), React.createElement("div", {
+        className: "card-title subTitle noBotMargin"
+      }, eInfo.Place), fDate, React.createElement("div", {
         className: "btn-group myButtonGroup"
       }, React.createElement("span", {
         className: "badge badge-primary myButtonGroup"
@@ -1725,7 +2074,10 @@ function (_Component) {
       }, eInfo.Team2)), React.createElement("div", {
         className: "btn-group myButtonGroup",
         role: "group",
-        "aria-label": "Basic example"
+        "aria-label": "Basic example",
+        style: {
+          display: isOver
+        }
       }, React.createElement("button", {
         type: "button",
         className: "btn btn-primary myButtonOnGroup",
@@ -1741,9 +2093,33 @@ function (_Component) {
         className: "btn btn-primary myButtonOnGroup",
         "data-toggle": "modal",
         "data-target": "#Add" + eInfo.Name + "eventCardBetModal"
-      }, "" + this.getFee(eInfo.Prob2))), React.createElement("hr", {
+      }, "" + this.getFee(eInfo.Prob2))), React.createElement("div", {
+        className: "btn-group myButtonGroup",
+        role: "group",
+        "aria-label": "Basic example",
+        style: {
+          display: isOver
+        }
+      }, React.createElement("button", {
+        type: "button",
+        className: "btn btn-success myLargeButton",
+        "data-toggle": "modal",
+        "data-target": "#Add" + eInfo.Name + "eventCardBetModal"
+      }, "Bet!")), React.createElement("div", {
+        className: "btn-group myButtonGroup",
+        style: {
+          display: showResult
+        }
+      }, React.createElement("span", {
+        className: "badge myButtonGroup badge-" + team1RI
+      }, eInfo.Team1R), React.createElement("span", {
+        className: "badge myButtonGroup badge-" + team2RI
+      }, eInfo.Team2R)), React.createElement("hr", {
         className: "my-4"
       }), React.createElement("button", {
+        onClick: function () {
+          return _this3.GenerateEventPage(eInfo._id);
+        },
         className: "btn btn-outline-info myCardButton",
         type: "submit"
       }, "More info"))), modal);
@@ -1759,6 +2135,390 @@ EventCard.propTypes = {
   eventInfo: PropTypes.object.isRequired
 };
 module.exportDefault(EventCard);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"EventPage.jsx":function(require,exports,module){
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                     //
+// imports/ui/MainManage/EventPage.jsx                                                                                 //
+//                                                                                                                     //
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                       //
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+
+var React, Component;
+module.watch(require("react"), {
+  "default": function (v) {
+    React = v;
+  },
+  Component: function (v) {
+    Component = v;
+  }
+}, 0);
+var PropTypes;
+module.watch(require("prop-types"), {
+  "default": function (v) {
+    PropTypes = v;
+  }
+}, 1);
+var withTracker;
+module.watch(require("meteor/react-meteor-data"), {
+  withTracker: function (v) {
+    withTracker = v;
+  }
+}, 2);
+var Chart;
+module.watch(require("chart.js"), {
+  "default": function (v) {
+    Chart = v;
+  }
+}, 3);
+module.watch(require("../css/EventPage.css"));
+
+var EventPage =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2.default)(EventPage, _Component);
+
+  function EventPage() {
+    return _Component.apply(this, arguments) || this;
+  }
+
+  var _proto = EventPage.prototype;
+
+  _proto.componentDidMount = function () {
+    function componentDidMount() {//this.generateChart();
+    }
+
+    return componentDidMount;
+  }();
+
+  _proto.componentDidUpdate = function () {
+    function componentDidUpdate() {//this.generateChart();
+    }
+
+    return componentDidUpdate;
+  }();
+
+  _proto.transparentize = function () {
+    function transparentize(color, opacity) {
+      var alpha = opacity === undefined ? 0.5 : 1 - opacity;
+      return Color(color).alpha(alpha).rgbString();
+    }
+
+    return transparentize;
+  }();
+
+  _proto.generateChart = function () {
+    function generateChart() {
+      var bInfo = this.props.betsInfo;
+      var eInfo = this.props.eventInfo;
+      var ctx = document.getElementById('myChart').getContext('2d');
+      eInfo = eInfo[0]; //console.log("Event bets data");
+      //console.log(bInfo);
+
+      /* Example
+      var chart = new Chart(ctx, {
+          // The type of chart we want to create
+          type: 'line',
+            // The data for our dataset
+          data: {
+              labels: ["January", "February", "March", "April", "May", "June", "July"],
+              datasets: [{
+                  label: "My First dataset",
+                  backgroundColor: 'rgb(255, 99, 132)',
+                  borderColor: 'rgb(255, 99, 132)',
+                  data: [0, 10, 5, 2, 20, 30, 45],
+              }]
+          },
+            // Configuration options go here
+          options: {}
+      });*/
+
+      var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7"],
+          datasets: [{
+            backgroundColor: this.transparentize("rgb(255, 0, 0)", 0.5),
+            borderColor: "rgba(255, 0, 0, 255)",
+            data: [0, 10, 20, 30, -5, 0, 10],
+            label: 'Dataset',
+            fill: "origin"
+          }]
+        },
+        options: Chart.helpers.merge({
+          elements: {
+            line: {
+              tension: 0.000001
+            }
+          },
+          plugins: {
+            filler: {
+              propagate: false
+            }
+          },
+          title: {
+            text: eInfo.Name + " bets",
+            display: true
+          }
+        })
+      });
+      /*var chart = new Chart(ctx, {
+          // The type of chart we want to create
+          type: 'line',
+            // The data for our dataset
+          data: {
+              labels: ["Team 1", "Team 2"],
+              datasets: [{
+                  label: "Bets",
+                  backgroundColor: "rgb(255,0,0)",
+                  borderColor: "rgb(0, 255, 0)",
+                  data: [0, 10, 20, -5, -10],
+                  fill: 'origin',
+              }]
+          },
+            // Configuration options go here
+          options: {}
+      });*/
+
+      return chart;
+    }
+
+    return generateChart;
+  }();
+
+  _proto.getWinner = function () {
+    function getWinner() {
+      var eInfo = this.props.eventInfo;
+      eInfo = eInfo[0]; //console.log(eInfo);
+      //console.log("Event result: " + eInfo.Team1R + " - " + eInfo.Team2R);
+
+      if (eInfo.Team1R > eInfo.Team2R) {
+        return eInfo.Team1;
+      } else if (eInfo.Team1R < eInfo.Team2R) {
+        return eInfo.Team2;
+      } else {
+        return "It's a Tie!";
+      }
+    }
+
+    return getWinner;
+  }();
+
+  _proto.startEvent = function () {
+    function startEvent() {
+      var eInfo = this.props.eventInfo;
+      eInfo = eInfo[0];
+      this.props.startEvent(eInfo._id);
+    }
+
+    return startEvent;
+  }();
+
+  _proto.endEvent = function () {
+    function endEvent(eID) {
+      var eInfo = this.props.eventInfo;
+      eInfo = eInfo[0];
+      this.props.endEvent(eInfo._id);
+    }
+
+    return endEvent;
+  }();
+
+  _proto.loadBetsBar = function () {
+    function loadBetsBar() {
+      var eInfo = this.props.eventInfo;
+      eInfo = eInfo[0];
+      var bInfo = this.props.betsInfo;
+      var res = "Loading bar...";
+      var numBets1 = 0;
+      var numBets2 = 0;
+      var numBetsT = 0;
+      bInfo.map(function (b) {
+        if (b.Team1 > 0) {
+          numBets1++;
+        }
+
+        if (b.Team2 > 0) {
+          numBets2++;
+        }
+
+        if (b.Tie > 0) {
+          numBetsT++;
+        }
+      });
+      var total = numBets1 + numBets2 + numBetsT;
+      var per1 = numBets1 * 100 / total;
+      var per2 = numBets2 * 100 / total;
+      var perT = numBetsT * 100 / total;
+      per1 = Math.round(per1 * 100) / 100;
+      per2 = Math.round(per2 * 100) / 100;
+      perT = Math.round(perT * 100) / 100; //console.log("Bets bar: " + per1 + "|" + perT + "|" + per2 + ":>" + total);
+
+      if (total == 0) {
+        return React.createElement("h5", null, "There are no bets yet!");
+      } else {
+        //console.log("Printing bets bar");
+        return React.createElement("div", {
+          id: "BetsBar"
+        }, React.createElement("h5", null, "There are no bets yet!"), React.createElement("div", {
+          className: "btn-group myButtonGroup"
+        }, React.createElement("span", {
+          className: "badge badge-info myButtonGroup"
+        }, eInfo.Team1), React.createElement("span", {
+          className: "badge badge-warning myButtonGroup"
+        }, "Tie"), React.createElement("span", {
+          className: "badge badge-primary myButtonGroup"
+        }, eInfo.Team2)), React.createElement("div", {
+          className: "progress"
+        }, React.createElement("div", {
+          className: "progress-bar progress-bar-striped progress-bar-animated bg-info",
+          role: "progressbar",
+          "aria-valuenow": per1,
+          "aria-valuemin": "0",
+          "aria-valuemax": "100",
+          style: {
+            width: per1 + "%"
+          }
+        }, per1 + "%"), React.createElement("div", {
+          className: "progress-bar progress-bar-striped progress-bar-animated bg-warning",
+          role: "progressbar",
+          "aria-valuenow": perT,
+          "aria-valuemin": "0",
+          "aria-valuemax": "100",
+          style: {
+            width: perT + "%"
+          }
+        }, perT + "%"), React.createElement("div", {
+          className: "progress-bar progress-bar-striped progress-bar-animated",
+          role: "progressbar",
+          "aria-valuenow": per2,
+          "aria-valuemin": "0",
+          "aria-valuemax": "100",
+          style: {
+            width: per2 + "%"
+          }
+        }, per2 + "%")));
+      }
+    }
+
+    return loadBetsBar;
+  }();
+
+  _proto.render = function () {
+    function render() {
+      var _this = this;
+
+      var bInfo = this.props.betsInfo;
+      var eInfo = this.props.eventInfo;
+      eInfo = eInfo[0]; //console.log("Event bets data");
+      //console.log(bInfo);
+      //console.log(eInfo);
+      //console.log("EventPage | Render | Event info: ");
+      //console.log(eInfo);
+
+      var state = "";
+      var score = "";
+      var winnerInfo = "";
+
+      if (eInfo.State == "STARTED") {
+        state = React.createElement("h5", {
+          className: "txtLive"
+        }, "Now Live!");
+        score = React.createElement("h5", {
+          className: "txtScore"
+        }, eInfo.Team1R + " - " + eInfo.Team2R);
+      } else if (eInfo.State == "FINISHED") {
+        state = React.createElement("h5", {
+          className: "txtLive"
+        }, "Event finished!");
+        score = React.createElement("h5", {
+          className: "txtScore"
+        }, eInfo.Team1R + " - " + eInfo.Team2R);
+        winnerInfo = React.createElement("h5", {
+          className: "txtWinner"
+        }, this.getWinner() + " win!");
+      } else {
+        state = React.createElement("h5", null, "Waiting for the event to start!");
+      }
+
+      return React.createElement("div", {
+        id: "EventModal",
+        className: "modal",
+        tabIndex: "-1",
+        role: "dialog"
+      }, React.createElement("div", {
+        className: "modal-dialog modal-lg myEventModal",
+        role: "document"
+      }, React.createElement("div", {
+        className: "modal-content"
+      }, React.createElement("div", {
+        className: "modal-header"
+      }, React.createElement("h5", {
+        className: "modal-title"
+      }, eInfo.Name + " info..."), React.createElement("div", {
+        className: "rightButtons"
+      }, this.props.userType == "ADMIN" && eInfo.State == "NOT_STARTED" ? React.createElement("button", {
+        onClick: function () {
+          return _this.startEvent();
+        },
+        type: "button",
+        className: "btn btn-success myAdminButton"
+      }, "Start event") : "", this.props.userType == "ADMIN" && eInfo.State == "STARTED" ? React.createElement("button", {
+        onClick: function () {
+          return _this.endEvent();
+        },
+        type: "button",
+        className: "btn btn-danger myAdminButton"
+      }, "End event") : "", this.props.userType == "ADMIN" && eInfo.State == "STARTED" ? React.createElement("button", {
+        type: "button",
+        className: "btn btn-info"
+      }, "Update score") : "", React.createElement("button", {
+        type: "button",
+        className: "close",
+        "data-dismiss": "modal",
+        "aria-label": "Close"
+      }, React.createElement("span", {
+        "aria-hidden": "true"
+      }, "\xD7")))), React.createElement("div", {
+        className: "modal-body"
+      }, React.createElement("div", {
+        className: "container"
+      }, React.createElement("div", {
+        id: "UpdateInputs",
+        className: "container"
+      }, React.createElement("div", {
+        id: "SetStateDiv"
+      })), React.createElement("h5", null, "Date: ", eInfo.Date), React.createElement("div", {
+        className: "centeredDiv"
+      }, state, score, winnerInfo), this.loadBetsBar())), React.createElement("div", {
+        className: "modal-footer"
+      }, React.createElement("button", {
+        type: "button",
+        className: "btn btn-secondary",
+        "data-dismiss": "modal"
+      }, "Close")))));
+    }
+
+    return render;
+  }();
+
+  return EventPage;
+}(Component);
+
+EventPage.propTypes = {
+  userType: PropTypes.string.isRequired,
+  eventInfo: PropTypes.array.isRequired,
+  betsInfo: PropTypes.array.isRequired
+};
+module.exportDefault(withTracker(function () {
+  Meteor.subscribe("Events");
+  return {};
+})(EventPage));
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 },"ImageGallery.jsx":function(require,exports,module){
@@ -1951,36 +2711,42 @@ module.watch(require("./CategoryPage.jsx"), {
     CategoryPage = v;
   }
 }, 5);
+var EventPage;
+module.watch(require("./EventPage.jsx"), {
+  "default": function (v) {
+    EventPage = v;
+  }
+}, 6);
 var MyBets;
 module.watch(require("./MyBets.jsx"), {
   "default": function (v) {
     MyBets = v;
   }
-}, 6);
+}, 7);
 var Bets;
 module.watch(require("../../api/Bets"), {
   Bets: function (v) {
     Bets = v;
   }
-}, 7);
+}, 8);
 var Categories;
 module.watch(require("../../api/Categories"), {
   Categories: function (v) {
     Categories = v;
   }
-}, 8);
+}, 9);
 var Events;
 module.watch(require("../../api/Events"), {
   Events: function (v) {
     Events = v;
   }
-}, 9);
+}, 10);
 var UserData;
 module.watch(require("../../api/UserData"), {
   UserData: function (v) {
     UserData = v;
   }
-}, 10);
+}, 11);
 module.watch(require("../css/MainPage.css"));
 
 var MainPage =
@@ -1993,24 +2759,179 @@ function (_Component) {
 
     _this = _Component.call(this, props) || this;
     _this.state = {
-      username: ''
+      state: "",
+      username: '',
+      actEventPage: "",
+      betsToPay: [],
+      lastEndedEvent: {}
     };
     _this.AddBet = _this.AddBet.bind((0, _assertThisInitialized2.default)(_this));
+    _this.startEvent = _this.startEvent.bind((0, _assertThisInitialized2.default)(_this));
+    _this.endEvent = _this.endEvent.bind((0, _assertThisInitialized2.default)(_this));
+    _this.generateEventPage = _this.generateEventPage.bind((0, _assertThisInitialized2.default)(_this));
     _this.loadCategoryPages = _this.loadCategoryPages.bind((0, _assertThisInitialized2.default)(_this));
     return _this;
   }
 
   var _proto = MainPage.prototype;
 
+  _proto.startEvent = function () {
+    function startEvent(eId) {
+      var _this2 = this;
+
+      //console.log("Starting event | id: " + eId)
+      var mUserType = this.props.userData.type;
+      Meteor.call("Events.startEvent", eId, function () {
+        _this2.setState({
+          actEventPage: React.createElement(EventPage, {
+            betsInfo: Bets.find({
+              eventId: eId
+            }).fetch(),
+            eventInfo: Events.find({
+              _id: eId
+            }).fetch(),
+            userType: mUserType,
+            startEvent: function (eID) {
+              return _this2.startEvent(eId);
+            },
+            endEvent: function (eId) {
+              return _this2.endEvent(eId);
+            }
+          })
+        });
+      });
+    }
+
+    return startEvent;
+  }();
+
+  _proto.endEvent = function () {
+    function endEvent(eId) {
+      var _this3 = this;
+
+      //console.log("Ending event | id: " + eId);
+      var mUserType = this.props.userData.type;
+      Meteor.call("Events.endEvent", eId, Bets.find({
+        eventId: eId
+      }).fetch(), function () {
+        _this3.setState({
+          actEventPage: React.createElement(EventPage, {
+            betsInfo: Bets.find({
+              eventId: eId
+            }).fetch(),
+            eventInfo: Events.find({
+              _id: eId
+            }).fetch(),
+            userType: mUserType,
+            startEvent: function (eID) {
+              return _this3.startEvent(eId);
+            },
+            endEvent: function (eId) {
+              return _this3.endEvent(eId);
+            }
+          }),
+          betsToPay: Bets.find({
+            eventId: eId
+          }).fetch(),
+          lastEndedEvent: Events.find({
+            _id: eId
+          }).fetch()
+        });
+
+        _this3.payWinners(eId);
+      });
+    }
+
+    return endEvent;
+  }();
+
+  _proto.payWinners = function () {
+    function payWinners(eId) {
+      //console.log("PayWinners");
+      //console.log(this.state.betsToPay);
+      var eInfo = this.state.lastEndedEvent;
+      var winner = "NA";
+
+      if (eInfo.Team1R > eInfo.Team2R) {
+        winner = 1;
+      } else if (eInfo.Team1R < eInfo.Team2R) {
+        winner = 2;
+      } else {
+        winner = 0;
+      }
+
+      var bets = this.state.betsToPay;
+      bets.forEach(function (e) {
+        var e1 = e.E1;
+        var e2 = e.E2;
+        var eT = e.ET; //let currentUserData = UserData.find({ userId: e.userId }).fetch();
+        //console.log(currentUserData);
+        //console.log("Earnings: " + e1 + "|" + eT + "|" + e2);
+        //console.log("Winner: " + winner);
+
+        Meteor.call("Bets.closeBet", e._id, e1, e2, eT, winner);
+        Meteor.call("UserData.removeBetCoins", e.userId); //let total = parseFloat(currentUserData.coins);
+
+        var earning = 0;
+
+        if (e1 > 0 && winner == 1) {
+          earning = e1;
+        } else if (e2 > 0 && winner == 2) {
+          earning = e2;
+        } else if (eT > 0 && winner == 0) {
+          earning = eT;
+        }
+
+        var newCoins = earning;
+        console.log("New coins: " + newCoins);
+        Meteor.call("UserData.updateCoins", e.userId, earning);
+      });
+    }
+
+    return payWinners;
+  }();
+
+  _proto.generateEventPage = function () {
+    function generateEventPage(eId) {
+      var _this4 = this;
+
+      //console.log("Main page | GenerateEventPage | EventId: " + eId);
+      var mUserType = this.props.userData.type;
+      this.setState({
+        actEventPage: React.createElement(EventPage, {
+          betsInfo: Bets.find({
+            eventId: eId
+          }).fetch(),
+          eventInfo: Events.find({
+            _id: eId
+          }).fetch(),
+          userType: mUserType,
+          startEvent: function (eID) {
+            return _this4.startEvent(eId);
+          },
+          endEvent: function (eId) {
+            return _this4.endEvent(eId);
+          }
+        })
+      }, function () {
+        $('#EventModal').modal('show');
+      });
+    }
+
+    return generateEventPage;
+  }();
+
   _proto.AddBet = function () {
     function AddBet(eventId, prob1, prob2, probT, bet1, bet2, betT, eR1, eR2, eRt) {
       console.log("MainPage | AddBet: " + eventId + " - " + prob1 + " - " + prob2 + " - " + probT + " - " + bet1 + " - " + bet2 + " - " + betT + " - " + eR1 + " - " + eR2 + " - " + eRt); //alert("MainPage | Adding bet : " + bet1 + "|" + betT + "|" + bet2 + " | Earnings: " + eR);
 
-      Meteor.call("UserData.addBet", eventId, prob1, prob2, probT, bet1, bet2, betT, eR1, eR2, eRt, function (err, res) {
+      var totalCoins = parseFloat(bet1 + bet2 + betT);
+      Meteor.call("Bets.addBet", eventId, prob1, prob2, probT, bet1, bet2, betT, eR1, eR2, eRt, function (err, res) {
         if (err) {
           alert(err);
         } else {
           alert("Bet created!");
+          Meteor.call("UserData.removeNewBetCoins", totalCoins);
         }
       });
     }
@@ -2046,7 +2967,7 @@ function (_Component) {
 
   _proto.loadCategoryPages = function () {
     function loadCategoryPages() {
-      var _this2 = this;
+      var _this5 = this;
 
       var actCategories = this.props.categories;
       var res = []; //console.log(this.props.userData);        
@@ -2056,7 +2977,10 @@ function (_Component) {
         key: "MyBetsPage",
         myBets: this.props.userBets,
         AddBet: function (eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt) {
-          return _this2.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt);
+          return _this5.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt);
+        },
+        GenerateEventPage: function (eId) {
+          return _this5.generateEventPage(eId);
         }
       }));
       res.push(actCategories.map(function (e) {
@@ -2066,9 +2990,12 @@ function (_Component) {
           events: Events.find({
             Category: e.name
           }).fetch(),
-          userData: _this2.props.userData,
+          userData: _this5.props.userData,
           AddBet: function (eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt) {
-            return _this2.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt);
+            return _this5.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt);
+          },
+          GenerateEventPage: function (eId) {
+            return _this5.generateEventPage(eId);
           }
         });
       }));
@@ -2086,24 +3013,28 @@ function (_Component) {
       var userDataAvailable = currentUserData !== undefined;
       var loggedIn = currentUser && currentUserAvailable && currentUserData && userDataAvailable;
       var numCoins = 0;
+      var inBetCoins = 0;
 
       if (loggedIn) {
         /*console.log("Render | loggedIn | AllDta: ");
         console.log(currentUser);
         console.log(currentUserData);*/
         numCoins = currentUserData.coins;
+        inBetCoins = currentUserData.InBet;
         var actCategories = this.props.categories;
 
         if (actCategories != null && actCategories != undefined && actCategories.length > 0) {//console.log(actCategories);
         }
       }
 
+      var actEventElement = this.state.actEventPage;
       return React.createElement("div", {
         id: "MainPage"
       }, loggedIn ? React.createElement(BasicNav, {
         logout: this.props.logout,
         userName: currentUser.username,
-        coins: numCoins
+        coins: numCoins,
+        InBet: inBetCoins
       }) : "Error", React.createElement("div", {
         className: "container-fluid"
       }, React.createElement("div", {
@@ -2117,7 +3048,7 @@ function (_Component) {
       }, this.loadCategoriesList()))), React.createElement("main", {
         role: "main",
         className: "col-md-10 categoryPageContainer"
-      }, this.loadCategoryPages()))));
+      }, this.loadCategoryPages(), actEventElement))));
     }
 
     return render;
@@ -2142,7 +3073,14 @@ module.exportDefault(withTracker(function () {
       }
     }).fetch(),
     events: Events.find({}).fetch(),
-    userBets: Bets.find({}).fetch()
+    userBets: Bets.find({
+      userId: Meteor.userId()
+    }, {
+      fields: Bets.publicFields,
+      sort: {
+        eventId: 1
+      }
+    }).fetch()
   };
 })(MainPage));
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2243,6 +3181,8 @@ function (_Component) {
               //console.log(e),
               <EventBetCard key={e.Name + "BetCard"} eventBetsInfo={e} eventInfo={Events.find({ _id: e.EventId }, { limit: 1 }).fetch()} AddBet={(b1, b2, bT, eR) => this.AddBet(b1, b2, bT, eR)} />
           ));*/
+          //console.log("Load bets list | Bets: ");
+          //console.log(actBets);
 
           res = [];
           var sup = [];
@@ -2267,15 +3207,18 @@ function (_Component) {
                 }).fetch(),
                 AddBet: function (eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt) {
                   return _this2.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt);
+                },
+                GenerateEventPage: function (eId) {
+                  return _this2.props.GenerateEventPage(eId);
                 }
               }));
               numEvents++;
               sup = [];
+              sup.push(e);
               lastEventId = e.eventId;
             }
           }
 
-          sup.push(actBets[i - 1]);
           res.push(React.createElement(EventBetCard, {
             key: "BetCard#" + numEvents,
             eventBetsInfo: sup,
@@ -2286,6 +3229,9 @@ function (_Component) {
             }).fetch(),
             AddBet: function (eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt) {
               return _this2.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt);
+            },
+            GenerateEventPage: function (eId) {
+              return _this2.props.GenerateEventPage(eId);
             }
           })); //console.log(res);
 
@@ -2305,7 +3251,7 @@ function (_Component) {
     function render() {
       return React.createElement("div", {
         id: "MyBets",
-        className: "container myEvents"
+        className: "container myBets"
       }, React.createElement("h1", null, "My Bets"), React.createElement("hr", {
         className: "my-4"
       }), React.createElement("div", {
@@ -2394,7 +3340,21 @@ var renderRoutes = function () {
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}},"css":{"AddEventModal.css":function(require,exports,module){
+}},"css":{"AddCoinsModal.css":function(require,exports,module){
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                     //
+// imports/ui/css/AddCoinsModal.css                                                                                    //
+//                                                                                                                     //
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                       //
+module.exports = require("meteor/modules").addStyles(
+  ".bottomPadding{\n    padding-bottom: 10px;\n}"
+);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"AddEventModal.css":function(require,exports,module){
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                                     //
@@ -2404,6 +3364,20 @@ var renderRoutes = function () {
                                                                                                                        //
 module.exports = require("meteor/modules").addStyles(
   ".bottomPadding{\n    padding-bottom: 10px;\n}"
+);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"App.css":function(require,exports,module){
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                     //
+// imports/ui/css/App.css                                                                                              //
+//                                                                                                                     //
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                       //
+module.exports = require("meteor/modules").addStyles(
+  "body {\n    font-family: 'Montserrat', sans-serif;\n}"
 );
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2431,7 +3405,7 @@ module.exports = require("meteor/modules").addStyles(
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                                                                                                        //
 module.exports = require("meteor/modules").addStyles(
-  ".category{\n    display: none;\n    max-width: 95%;\n}\n\n:target{\n    display: block;\n}\n\n.Live{\n    color: springgreen;\n    font-weight: bold;\n}\n\n.verticalCenteredParent{\n    display: table;\n}\n\n.pullRight{\n    display: table-cell;\n    text-align: right;\n    vertical-align: middle;\n}"
+  ".category{\n    display: none;\n    background-color: white;\n    max-width: 95%;\n    height: 100%;\n}\n\n:target{\n    display: block;\n}\n\n.Live{\n    color: springgreen;\n    font-weight: bold;\n}\n\n.verticalCenteredParent{\n    display: table;\n}\n\n.pullRight{\n    display: table-cell;\n    text-align: right;\n    vertical-align: middle;\n}"
 );
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2459,7 +3433,21 @@ module.exports = require("meteor/modules").addStyles(
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                                                                                                        //
 module.exports = require("meteor/modules").addStyles(
-  ".myCard  p, h4{\n    margin-bottom: 0 !important;\n}\n\n.myCardButton{\n    width: 100%;\n}\n\n.myButtonGroup{\n    width: 100%;\n}\n\n.myButtonOnGroup{\n    padding-bottom: 0;\n    padding-top: 0;\n    width: 100%;\n}\n\n.subTitle{\n    color: dimgray;\n}"
+  ".myCard  p, h4{\n    margin-bottom: 0 !important;\n}\n\n.myCardButton{\n    width: 100%;\n}\n\n.myButtonGroup{\n    width: 100%;\n}\n\n.myButtonOnGroup{\n    padding-bottom: 0;\n    padding-top: 0;\n    width: 100%;\n}\n\n.txtLive{\n  color: greenyellow;\n  font-weight: bold;\n}\n\n.txtFinished{\n  color: red;\n  font-weight: bold;\n}\n\n.noBotMargin{\n    margin-bottom: 0;\n}\n\n.myLargeButton{\n    padding-top: 0;\n    padding-bottom: 0;\n    width: 100%;\n}"
+);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"EventPage.css":function(require,exports,module){
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                     //
+// imports/ui/css/EventPage.css                                                                                        //
+//                                                                                                                     //
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                       //
+module.exports = require("meteor/modules").addStyles(
+  "\n.myAdminButton{\n  margin-right: 10px;\n}\n\n.myEventModal {\n  margin: auto;\n  max-width: 100%;\n  width: 80%;\n}\n\n.rightButtons{\n  float: right;\n}\n\n\n/* Text */\n.txtLive{\n  color: #28a745;\n  font-weight: bold;\n  text-align: center;\n}\n\n.txtScore{\n  color: dodgerblue;\n  font-weight: bold;\n  text-align: center;\n}\n\n.txtWinner{\n  color: #28a745;\n  font-weight: bold;\n  text-align: center;\n}"
 );
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2474,6 +3462,20 @@ module.exports = require("meteor/modules").addStyles(
                                                                                                                        //
 module.exports = require("meteor/modules").addStyles(
   ""
+);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"Login.css":function(require,exports,module){
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                     //
+// imports/ui/css/Login.css                                                                                            //
+//                                                                                                                     //
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                       //
+module.exports = require("meteor/modules").addStyles(
+  "body{\n    background-image: url(\"img/Login.jpg\");\n    background-repeat: no-repeat;\n    background-size: 100% auto;\n}\n\np{\n    font-size: 20   px;\n}\n\n.myContent{\n    background-color: white;    \n}\n\n.myMainTitle{\n    color: white;\n    font-size: 300%;\n}\n\n.mySubTitle{\n    color: white;\n    font-size: 150%;\n}\n\n.loginDiv{\n    width: 100vw;\n    height: 100vh;\n}\n\n.verticalAlignParent{\n    display: table;\n    text-align: center;\n}\n\n.verticalAlignSon{\n    display: table-cell;\n    vertical-align: middle;\n}"
 );
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2501,7 +3503,7 @@ module.exports = require("meteor/modules").addStyles(
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                                                                                                        //
 module.exports = require("meteor/modules").addStyles(
-  ".myEvents{\n    display: none;\n    max-width: 95%;\n}\n\n:target{\n    display: block;\n}\n\n.Live{\n    color: springgreen;\n    font-weight: bold;\n}"
+  ".myBets{\n    display: none;\n    background-color: white;\n    max-width: 95%;\n    height: 100%;\n}\n\n:target{\n    display: block;\n}\n\n.Live{\n    color: springgreen;\n    font-weight: bold;\n}"
 );
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2543,7 +3545,8 @@ if (Meteor.isServer) {
   // This code only runs on the server
   Meteor.publish('Bets', function () {
     function userDataPublication() {
-      //return Bets.find();
+      return Bets.find();
+
       if (!this.userId) {
         return this.ready();
       }
@@ -2563,7 +3566,7 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  "UserData.addBet": function (eI, p1, p2, pT, b1, b2, bT, eR) {
+  "Bets.addBet": function (eI, p1, p2, pT, b1, b2, bT, e1, e2, eT) {
     Bets.insert({
       userId: this.userId,
       eventId: eI,
@@ -2573,7 +3576,19 @@ Meteor.methods({
       Team1: b1,
       Team2: b2,
       Tie: bT,
-      Earnings: eR
+      E1: e1,
+      E2: e2,
+      ET: eT,
+      State: "OPEN"
+    });
+  },
+  "Bets.closeBet": function (betId) {
+    Bets.update({
+      _id: betId
+    }, {
+      $set: {
+        State: "CLOSED"
+      }
     });
   }
 });
@@ -2724,9 +3739,31 @@ Meteor.methods({
       Prob1: prob1,
       Prob2: prob2,
       Tie: tie,
-      Bets: []
+      State: "NOT_STARTED",
+      Team1R: 0,
+      Team2R: 0
     };
     Events.insert(nEvent);
+  },
+  "Events.startEvent": function (eId) {
+    console.log("Starting event");
+    Events.update({
+      _id: eId
+    }, {
+      $set: {
+        State: "STARTED"
+      }
+    });
+  },
+  "Events.endEvent": function (eId) {
+    console.log("Ending event");
+    Events.update({
+      _id: eId
+    }, {
+      $set: {
+        State: "FINISHED"
+      }
+    });
   }
 });
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2789,7 +3826,8 @@ Meteor.methods({
     UserData.insert({
       type: "USER",
       userId: this.userId,
-      coins: 1000
+      coins: 1000,
+      InBet: 0
     });
   },
   "UserData.getAll": function () {
@@ -2805,6 +3843,43 @@ Meteor.methods({
       userId: userId
     }).fetch();
     return res;
+  },
+  "UserData.updateCoins": function (aUserId, e1) {
+    UserData.update({
+      userId: aUserId
+    }, {
+      $inc: {
+        coins: e1
+      }
+    });
+  },
+  "UserData.removeBetCoins": function (aUserId) {
+    UserData.update({
+      userId: aUserId
+    }, {
+      $set: {
+        InBet: 0
+      }
+    });
+  },
+  "UserData.addCoins": function (aUserId, numCoins) {
+    UserData.update({
+      userId: aUserId
+    }, {
+      $inc: {
+        coins: numCoins
+      }
+    });
+  },
+  "UserData.removeNewBetCoins": function (numCoins) {
+    UserData.update({
+      userId: this.userId
+    }, {
+      $inc: {
+        coins: -numCoins,
+        InBet: numCoins
+      }
+    });
   }
 });
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2814,8 +3889,8 @@ Meteor.methods({
     ".js",
     ".json",
     ".html",
-    ".jsx",
-    ".css"
+    ".css",
+    ".jsx"
   ]
 });
 require("/client/template.main.js");

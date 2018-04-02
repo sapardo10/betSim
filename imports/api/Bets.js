@@ -7,7 +7,7 @@ export const Bets = new Mongo.Collection("Bets");
 if (Meteor.isServer) {
     // This code only runs on the server
     Meteor.publish('Bets', function userDataPublication() {
-        //return Bets.find();
+        return Bets.find();
 
         if (!this.userId) {
             return this.ready();
@@ -23,7 +23,7 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-    "UserData.addBet"(eI, p1, p2, pT, b1, b2, bT, eR){
+    "Bets.addBet"(eI, p1, p2, pT, b1, b2, bT, e1, e2, eT){
 
         Bets.insert({
             userId: this.userId,
@@ -34,9 +34,18 @@ Meteor.methods({
             Team1: b1,
             Team2: b2,
             Tie: bT,
-            Earnings: eR
-
-        });
-    
-    }  
+            E1: e1,
+            E2: e2,
+            ET: eT,
+            State: "OPEN"
+        });    
+    },
+    "Bets.closeBet"(betId){
+        Bets.update(
+            { _id: betId },
+            {
+                $set: { State: "CLOSED" }
+            }
+        );
+    }
 });

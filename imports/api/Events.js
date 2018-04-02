@@ -26,7 +26,7 @@ Meteor.methods({
         let res = Events.find({}).fetch();
         console.log(res);
     },
-    "Events.addEvent"(category, name, place, date, image, team1, team2, prob1, prob2, tie){
+    "Events.addEvent"(category, name, place, date, image, team1, team2, prob1, prob2, tie) {
         let txtTest = "";
 
         txtTest += (category + "\n");
@@ -53,9 +53,31 @@ Meteor.methods({
             Prob1: prob1,
             Prob2: prob2,
             Tie: tie,
-            Bets: []
+            State: "NOT_STARTED",
+            Team1R: 0,
+            Team2R: 0
         };
 
         Events.insert(nEvent);
+    },
+    "Events.startEvent"(eId) {
+        console.log("Starting event");
+
+        Events.update(
+            { _id: eId },
+            {
+                $set: { State: "STARTED" }
+            }
+        );
+    },
+    "Events.endEvent"(eId) {
+        console.log("Ending event");
+
+        Events.update(
+            { _id: eId },
+            {
+                $set: { State: "FINISHED" }
+            }
+        );
     }
 });

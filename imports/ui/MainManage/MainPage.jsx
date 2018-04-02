@@ -5,6 +5,7 @@ import { withTracker } from "meteor/react-meteor-data";
 
 import BasicNav from "./BasicNav.jsx";
 import CategoryPage from "./CategoryPage.jsx";
+import EventPage from "./EventPage.jsx";
 import MyBets from "./MyBets.jsx";
 
 import { Bets } from "../../api/Bets";
@@ -18,22 +19,121 @@ class MainPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: ''
+            state: "",
+            username: '',
+            actEventPage: "",
+            betsToPay: [],
+            lastEndedEvent: {}
         };
 
         this.AddBet = this.AddBet.bind(this);
+        this.startEvent = this.startEvent.bind(this);
+        this.endEvent = this.endEvent.bind(this);
+        this.generateEventPage = this.generateEventPage.bind(this);
         this.loadCategoryPages = this.loadCategoryPages.bind(this);
+    }
+
+    startEvent(eId) {
+        //console.log("Starting event | id: " + eId)
+        let mUserType = this.props.userData.type;
+
+        Meteor.call("Events.startEvent", eId,
+            () => {
+                this.setState({
+                    actEventPage: <EventPage betsInfo={Bets.find({ eventId: eId }).fetch()} eventInfo={Events.find({ _id: eId }).fetch()} userType={mUserType} startEvent={(eID) => this.startEvent(eId)} endEvent={(eId) => this.endEvent(eId)} />
+                });
+            });
+    }
+
+    endEvent(eId) {
+        //console.log("Ending event | id: " + eId);
+        let mUserType = this.props.userData.type;
+
+        Meteor.call("Events.endEvent", eId, Bets.find({ eventId: eId }).fetch(),
+            () => {
+                this.setState({
+                    actEventPage: <EventPage betsInfo={Bets.find({ eventId: eId }).fetch()} eventInfo={Events.find({ _id: eId }).fetch()} userType={mUserType} startEvent={(eID) => this.startEvent(eId)} endEvent={(eId) => this.endEvent(eId)} />,
+                    betsToPay: Bets.find({ eventId: eId }).fetch(),
+                    lastEndedEvent: Events.find({ _id: eId }).fetch()
+                })
+
+                this.payWinners(eId);
+            });
+
+    }
+
+    payWinners(eId) {
+        //console.log("PayWinners");
+        //console.log(this.state.betsToPay);
+        let eInfo = this.state.lastEndedEvent;
+
+        let winner = "NA";
+
+        if (eInfo.Team1R > eInfo.Team2R) {
+            winner = 1;
+        } else if (eInfo.Team1R < eInfo.Team2R) {
+            winner = 2;
+        } else {
+            winner = 0;
+        }
+
+        let bets = this.state.betsToPay;
+
+        bets.forEach((e) => {
+            let e1 = e.E1;
+            let e2 = e.E2;
+            let eT = e.ET;
+            //let currentUserData = UserData.find({ userId: e.userId }).fetch();
+
+            //console.log(currentUserData);
+
+            //console.log("Earnings: " + e1 + "|" + eT + "|" + e2);
+            //console.log("Winner: " + winner);
+ 
+            Meteor.call("Bets.closeBet", e._id, e1, e2, eT, winner);
+            
+            Meteor.call("UserData.removeBetCoins", e.userId);
+ 
+            //let total = parseFloat(currentUserData.coins);
+            let earning = 0;
+            if(e1 > 0 && winner == 1 ){
+                earning = e1;
+            }else if(e2 > 0 && winner == 2 ){
+                earning = e2;
+            }else if(eT > 0 && winner == 0 ){
+                earning = eT;              
+            }
+ 
+            let newCoins = earning;
+            console.log("New coins: " + newCoins);
+ 
+            Meteor.call("UserData.updateCoins", e.userId, earning);
+        });
+    }
+
+    generateEventPage(eId) {
+        //console.log("Main page | GenerateEventPage | EventId: " + eId);
+        let mUserType = this.props.userData.type;
+
+        this.setState({
+            actEventPage: <EventPage betsInfo={Bets.find({ eventId: eId }).fetch()} eventInfo={Events.find({ _id: eId }).fetch()} userType={mUserType} startEvent={(eID) => this.startEvent(eId)} endEvent={(eId) => this.endEvent(eId)} />
+        },
+            () => {
+                $('#EventModal').modal('show')
+            }
+        );
     }
 
     AddBet(eventId, prob1, prob2, probT, bet1, bet2, betT, eR1, eR2, eRt) {
         console.log("MainPage | AddBet: " + eventId + " - " + prob1 + " - " + prob2 + " - " + probT + " - " + bet1 + " - " + bet2 + " - " + betT + " - " + eR1 + " - " + eR2 + " - " + eRt);
         //alert("MainPage | Adding bet : " + bet1 + "|" + betT + "|" + bet2 + " | Earnings: " + eR);
-
-        Meteor.call("UserData.addBet", eventId, prob1, prob2, probT, bet1, bet2, betT, eR1, eR2, eRt, (err, res) => {
+        let totalCoins = parseFloat(bet1 + bet2 + betT);
+        Meteor.call("Bets.addBet", eventId, prob1, prob2, probT, bet1, bet2, betT, eR1, eR2, eRt, (err, res) => {
             if (err) {
                 alert(err);
             } else {
                 alert("Bet created!");
+                Meteor.call("UserData.removeNewBetCoins", totalCoins);
             }
         });
     }
@@ -68,10 +168,10 @@ class MainPage extends Component {
         //console.log(this.props.userData);        
         //console.log(this.props.userBets);
 
-        res.push(<MyBets key="MyBetsPage" myBets={this.props.userBets} AddBet={(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt) => this.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt)}/>);
+        res.push(<MyBets key="MyBetsPage" myBets={this.props.userBets} AddBet={(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt) => this.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt)} GenerateEventPage={(eId) => this.generateEventPage(eId)} />);
 
-        res.push( actCategories.map(e => (
-            <CategoryPage key={e.name + "Page"} categoryInfo={e} events={Events.find({ Category: e.name }).fetch()} userData={this.props.userData} AddBet={(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt) => this.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt)} />
+        res.push(actCategories.map(e => (
+            <CategoryPage key={e.name + "Page"} categoryInfo={e} events={Events.find({ Category: e.name }).fetch()} userData={this.props.userData} AddBet={(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt) => this.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt)} GenerateEventPage={(eId) => this.generateEventPage(eId)} />
         )));
 
         return res;
@@ -87,6 +187,7 @@ class MainPage extends Component {
         let loggedIn = (currentUser && currentUserAvailable && currentUserData && userDataAvailable);
 
         let numCoins = 0;
+        let inBetCoins = 0;
 
         if (loggedIn) {
             /*console.log("Render | loggedIn | AllDta: ");
@@ -94,6 +195,7 @@ class MainPage extends Component {
             console.log(currentUserData);*/
 
             numCoins = currentUserData.coins;
+            inBetCoins = currentUserData.InBet;
 
             let actCategories = this.props.categories;
 
@@ -102,9 +204,11 @@ class MainPage extends Component {
             }
         }
 
+        let actEventElement = this.state.actEventPage;
+
         return (
             <div id="MainPage">
-                {loggedIn ? <BasicNav logout={this.props.logout} userName={currentUser.username} coins={numCoins} /> : "Error"}
+                {loggedIn ? <BasicNav logout={this.props.logout} userName={currentUser.username} coins={numCoins} InBet={inBetCoins} /> : "Error"}
 
                 <div className="container-fluid">
                     <div className="row">
@@ -119,6 +223,7 @@ class MainPage extends Component {
 
                         <main role="main" className="col-md-10 categoryPageContainer">
                             {this.loadCategoryPages()}
+                            {actEventElement}
                         </main>
                     </div>
                 </div>
@@ -142,7 +247,12 @@ export default withTracker(
         return {
             categories: Categories.find({}, { sort: { name: 1 } }).fetch(),
             events: Events.find({}).fetch(),
-            userBets: Bets.find({}).fetch()
+            userBets: Bets.find({
+                userId: Meteor.userId()
+            }, {
+                    fields: Bets.publicFields,
+                    sort: { eventId: 1 }
+                }).fetch()
         }
     }
 )(MainPage);

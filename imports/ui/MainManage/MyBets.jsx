@@ -42,7 +42,8 @@ class MyBets extends Component {
                     //console.log(e),
                     <EventBetCard key={e.Name + "BetCard"} eventBetsInfo={e} eventInfo={Events.find({ _id: e.EventId }, { limit: 1 }).fetch()} AddBet={(b1, b2, bT, eR) => this.AddBet(b1, b2, bT, eR)} />
                 ));*/
-
+                //console.log("Load bets list | Bets: ");
+                //console.log(actBets);
                 res = []
 
                 let sup = [];
@@ -58,18 +59,18 @@ class MyBets extends Component {
                         sup.push(e);
                     } else {
                         res.push(
-                            <EventBetCard key={"BetCard#" + (numEvents)} eventBetsInfo={sup} eventInfo={Events.find({ _id: lastEventId }, { limit: 1 }).fetch()} AddBet={(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt) => this.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt)} />
+                            <EventBetCard key={"BetCard#" + (numEvents)} eventBetsInfo={sup} eventInfo={Events.find({ _id: lastEventId }, { limit: 1 }).fetch()} AddBet={(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt) => this.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt)} GenerateEventPage={(eId) => this.props.GenerateEventPage(eId)} />
                         );
 
                         numEvents++;
                         sup = [];
+                        sup.push(e);
                         lastEventId = e.eventId;
                     }
                 }
 
-                sup.push(actBets[i - 1]);
                 res.push(
-                    <EventBetCard key={"BetCard#" + (numEvents)} eventBetsInfo={sup} eventInfo={Events.find({ _id: lastEventId }, { limit: 1 }).fetch()} AddBet={(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt) => this.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt)} />
+                    <EventBetCard key={"BetCard#" + (numEvents)} eventBetsInfo={sup} eventInfo={Events.find({ _id: lastEventId }, { limit: 1 }).fetch()} AddBet={(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt) => this.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt)} GenerateEventPage={(eId) => this.props.GenerateEventPage(eId)} />
                 );
 
                 //console.log(res);
@@ -85,7 +86,7 @@ class MyBets extends Component {
 
     render() {
         return (
-            <div id="MyBets" className="container myEvents">
+            <div id="MyBets" className="container myBets">
                 <h1>My Bets</h1>
 
                 <hr className="my-4" />

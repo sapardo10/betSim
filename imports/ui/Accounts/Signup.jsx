@@ -42,7 +42,7 @@ class Signup extends Component {
                         </div>
                         <div className="modal-body">
                             {error.length > 0 ?
-                                <div className="alert alert-danger fade in">{error}</div>
+                                <div className="alert alert-danger">{error}</div>
                                 : ''}
                             <form id="login-form"
                                 className="form col-md-12 center-block"

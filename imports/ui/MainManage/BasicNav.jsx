@@ -17,7 +17,7 @@ class BasicNav extends Component {
                     </button>
 
                     <div className="collapse navbar-collapse" id="navContent">
-                    
+
                         <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
                             <li className="nav-item active">
                                 <a name="" className="nav-link">Welcome {this.props.userName}! <span className="sr-only">(current)</span></a>
@@ -28,7 +28,11 @@ class BasicNav extends Component {
                             </li>
 
                             <li className="nav-item">
-                                <a id="coins-info" className="nav-link">In bet: 0</a>
+                                <a id="coins-info" className="nav-link">In bet: {this.props.InBet}</a>
+                            </li>
+
+                            <li>
+                                <button onClick={this.props.addcoins} className="btn btn-outline-success my-2 my-sm-0" type="button" data-toggle="modal" data-target="#AddCoins">Add coins</button>
                             </li>
                         </ul>
 

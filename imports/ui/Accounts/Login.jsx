@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { withHistory, Link } from 'react-router-dom'
 import { createContainer } from 'meteor/react-meteor-data'
 
+import "../css/Login.css";
+
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -21,7 +23,7 @@ class Login extends Component {
                     error: err.reason
                 });
             } else {
-                console.log(Meteor.userId());
+                //console.log(Meteor.userId());
                 this.props.history.push('/');
             }
         });
@@ -32,45 +34,52 @@ class Login extends Component {
         console.log(error);
 
         return (
-            <div className="">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="text-center">Login</h1>
+            <div id="loginDiv" className="loginDiv verticalAlignParent" style={{ backgroundImage: "img/Login.jpg" }}>
+                <div className="verticalAlignSon">
+                    <div className="">
+                        <h1 className="text-center myMainTitle">Welcome to BetSimulator!</h1>
+                        <h5 className="text-center mySubTitle">The best bet simulator ever!</h5>
+
+                        <div className="modal-dialog">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h1 className="text-center">Login</h1>
+                                </div>
+                                <div className="modal-body">
+                                    {error.length > 0 ?
+                                        <div className="alert alert-danger">{error}</div>
+                                        : ''}
+                                    <form id="login-form"
+                                        className="form col-md-12 center-block"
+                                        onSubmit={this.handleSubmit}>
+                                        <div className="form-group">
+                                            <input type="email"
+                                                id="login-email"
+                                                className="form-control input-lg"
+                                                placeholder="Email" />
+                                        </div>
+                                        <div className="form-group">
+                                            <input type="password"
+                                                id="login-password"
+                                                className="form-control input-lg"
+                                                placeholder="Password" />
+                                        </div>
+                                        <div className="form-group text-center">
+                                            <input type="submit"
+                                                id="login-button"
+                                                className="btn btn-primary btn-lg btn-block"
+                                                value="Login" />
+                                        </div>
+                                        <div className="form-group text-center">
+                                            <p className="text-center">
+                                                Don't have an account? Register <Link to="/signup">here</Link>
+                                            </p>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div className="modal-footer" style={{ borderTop: 0 }}></div>
+                            </div>
                         </div>
-                        <div className="modal-body">
-                            {error.length > 0 ?
-                                <div className="alert alert-danger">{error}</div>
-                                : ''}
-                            <form id="login-form"
-                                className="form col-md-12 center-block"
-                                onSubmit={this.handleSubmit}>
-                                <div className="form-group">
-                                    <input type="email"
-                                        id="login-email"
-                                        className="form-control input-lg"
-                                        placeholder="Email" />
-                                </div>
-                                <div className="form-group">
-                                    <input type="password"
-                                        id="login-password"
-                                        className="form-control input-lg"
-                                        placeholder="Password" />
-                                </div>
-                                <div className="form-group text-center">
-                                    <input type="submit"
-                                        id="login-button"
-                                        className="btn btn-primary btn-lg btn-block"
-                                        value="Login" />
-                                </div>
-                                <div className="form-group text-center">
-                                    <p className="text-center">
-                                        Don't have an account? Register <Link to="/signup">here</Link>
-                                    </p>
-                                </div>
-                            </form>
-                        </div>
-                        <div className="modal-footer" style={{ borderTop: 0 }}></div>
                     </div>
                 </div>
             </div>
