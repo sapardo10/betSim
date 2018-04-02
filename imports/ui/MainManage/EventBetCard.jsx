@@ -56,7 +56,7 @@ class EventBetCard extends Component {
         let bInfo = this.props.eventBetsInfo;
         let eInfo = this.props.eventInfo;
         eInfo = eInfo[0];
-
+        
         let State = eInfo.State;
         let Team1R = eInfo.Team1R;
         let Team2R = eInfo.Team2R;
@@ -126,7 +126,7 @@ class EventBetCard extends Component {
         let Prob1 = txtLoading;
         let Tie = txtLoading;
         let Prob2 = txtLoading;
-        let State = txtLoading;
+        let State = null;
         let Team1R = 0;
         let Team2R = 0;
 
@@ -168,7 +168,7 @@ class EventBetCard extends Component {
                 actBetsEarnings += e.Earnings;
             });
             //console.log(actBetsEarnings);           
-
+            
             if (State == "STARTED") {
                 fDate = <h5 className="card-title txtLive">Now live!</h5>;
             } else if (State == "FINISHED") {
@@ -185,6 +185,7 @@ class EventBetCard extends Component {
                 team1RI = "warning";
             }
         }
+
         return (
             <div id={Name} className={this.state.colSize + " myBetCard"}>
                 <div className="card myCard">
@@ -214,7 +215,7 @@ class EventBetCard extends Component {
                         <hr className="my-4" />
                         <h5 className="card-title">Bets...</h5>
 
-                        {this.loadEventBets()}
+                        { eInfo ? this.loadEventBets() : ""}
 
                         <hr className="my-4" />
 

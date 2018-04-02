@@ -1752,7 +1752,7 @@ function (_Component) {
       var Prob1 = txtLoading;
       var Tie = txtLoading;
       var Prob2 = txtLoading;
-      var State = txtLoading;
+      var State = null;
       var Team1R = 0;
       var Team2R = 0;
       var eInfo = this.props.eventInfo;
@@ -1876,7 +1876,7 @@ function (_Component) {
         className: "my-4"
       }), React.createElement("h5", {
         className: "card-title"
-      }, "Bets..."), this.loadEventBets(), React.createElement("hr", {
+      }, "Bets..."), eInfo ? this.loadEventBets() : "", React.createElement("hr", {
         className: "my-4"
       }), React.createElement("button", {
         onClick: function () {
