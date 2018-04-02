@@ -1663,13 +1663,11 @@ function (_Component) {
   }();
 
   _proto.loadEventBets = function () {
-    function loadEventBets() {
+    function loadEventBets(eInfo) {
       //console.log("EventBetCard | Bets: ");
       //console.log(this.props.eventBetsInfo);
       var res = "Loading...";
       var bInfo = this.props.eventBetsInfo;
-      var eInfo = this.props.eventInfo;
-      eInfo = eInfo[0];
       var State = eInfo.State;
       var Team1R = eInfo.Team1R;
       var Team2R = eInfo.Team2R; //console.log("Bets of event: ");
@@ -1703,7 +1701,7 @@ function (_Component) {
         }
 
         res.push(React.createElement("div", {
-          key: "Bet#" + (i + 1) + "Of" + this.props.eventInfo.Name,
+          key: "Bet#" + (i + 1) + "Of" + eInfo.Name,
           className: "row myBetGroup"
         }, React.createElement("div", {
           className: "btn-group myButtonGroup container"
@@ -1816,6 +1814,8 @@ function (_Component) {
         }
       }
 
+      console.log("Event Bet Card | Event info: ");
+      console.log(eInfo);
       return React.createElement("div", {
         id: Name,
         className: this.state.colSize + " myBetCard"
@@ -1876,7 +1876,7 @@ function (_Component) {
         className: "my-4"
       }), React.createElement("h5", {
         className: "card-title"
-      }, "Bets..."), eInfo ? this.loadEventBets() : "", React.createElement("hr", {
+      }, "Bets..."), eInfo && eInfo != undefined ? this.loadEventBets(eInfo) : "", React.createElement("hr", {
         className: "my-4"
       }), React.createElement("button", {
         onClick: function () {

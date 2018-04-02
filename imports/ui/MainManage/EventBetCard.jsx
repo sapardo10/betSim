@@ -48,15 +48,13 @@ class EventBetCard extends Component {
         }
     }
 
-    loadEventBets() {
+    loadEventBets(eInfo) {
         //console.log("EventBetCard | Bets: ");
         //console.log(this.props.eventBetsInfo);
 
         let res = "Loading...";
         let bInfo = this.props.eventBetsInfo;
-        let eInfo = this.props.eventInfo;
-        eInfo = eInfo[0];
-        
+
         let State = eInfo.State;
         let Team1R = eInfo.Team1R;
         let Team2R = eInfo.Team2R;
@@ -90,7 +88,7 @@ class EventBetCard extends Component {
             }
 
             res.push(
-                <div key={"Bet#" + (i + 1) + "Of" + this.props.eventInfo.Name} className="row myBetGroup">
+                <div key={"Bet#" + (i + 1) + "Of" + eInfo.Name} className="row myBetGroup">
                     <div className="btn-group myButtonGroup container">
                         <span className="badge badge-warning myBetTitle">{this.getFee(e.Prob1)}</span>
                         <span className="badge badge-warning myBetTitle">{this.getFee(e.ProbT)}</span>
@@ -103,7 +101,6 @@ class EventBetCard extends Component {
                         <span className={"badge myBetAmount badge-" + T2R}>{e.Team2}</span>
                     </div>
                 </div>
-
             );
         }
 
@@ -186,6 +183,9 @@ class EventBetCard extends Component {
             }
         }
 
+        console.log("Event Bet Card | Event info: ");
+        console.log(eInfo);
+
         return (
             <div id={Name} className={this.state.colSize + " myBetCard"}>
                 <div className="card myCard">
@@ -215,7 +215,7 @@ class EventBetCard extends Component {
                         <hr className="my-4" />
                         <h5 className="card-title">Bets...</h5>
 
-                        { eInfo ? this.loadEventBets() : ""}
+                        { eInfo && eInfo != undefined ? this.loadEventBets(eInfo) : ""}
 
                         <hr className="my-4" />
 
