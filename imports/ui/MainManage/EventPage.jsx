@@ -279,29 +279,27 @@ class EventPage extends Component {
         let bInfo = this.props.betsInfo;
         let eInfo = this.props.eventInfo;
         eInfo = eInfo[0];
-
-        //console.log("Event bets data");
-        //console.log(bInfo);
-        //console.log(eInfo);
-
-        //console.log("EventPage | Render | Event info: ");
-        //console.log(eInfo);
-
+        
         let state = "";
         let score = ""
         let winnerInfo = ""
 
+        let eventState = "NOT_STARTED";
 
-        if (eInfo.State == "STARTED") {
-            state = <h5 className="txtLive">Now Live!</h5>
-            score = <h5 className="txtScore">{eInfo.Team1R + " - " + eInfo.Team2R}</h5>
-        } else if (eInfo.State == "FINISHED") {
-            state = <h5 className="txtLive">Event finished!</h5>
-            score = <h5 className="txtScore">{eInfo.Team1R + " - " + eInfo.Team2R}</h5>
-            winnerInfo = <h5 className="txtWinner">{this.getWinner() + " win!"}</h5>
-        } else {
-            state = <h5>Waiting for the event to start!</h5>
-        }
+        if(eInfo){
+            eventState = eInfo.State;
+
+            if (eInfo.State == "STARTED") {
+                state = <h5 className="txtLive">Now Live!</h5>
+                score = <h5 className="txtScore">{eInfo.Team1R + " - " + eInfo.Team2R}</h5>
+            } else if (eInfo.State == "FINISHED") {
+                state = <h5 className="txtLive">Event finished!</h5>
+                score = <h5 className="txtScore">{eInfo.Team1R + " - " + eInfo.Team2R}</h5>
+                winnerInfo = <h5 className="txtWinner">{this.getWinner() + " win!"}</h5>
+            } else {
+                state = <h5>Waiting for the event to start!</h5>
+            }
+        }       
 
         let updatingScores = this.state.updatingScores;
         let addingEvents = this.state.addingEvents;
@@ -314,9 +312,9 @@ class EventPage extends Component {
                             <h5 className="modal-title">{eInfo.Name + " info..."}</h5>
 
                             <div className="rightButtons">
-                                {this.props.userType == "ADMIN" && eInfo.State == "NOT_STARTED" ? <button onClick={() => this.startEvent()} type="button" className="btn btn-success myAdminButton">Start event</button> : ""}
-                                {this.props.userType == "ADMIN" && eInfo.State == "STARTED" ? <button onClick={() => this.endEvent()} type="button" className="btn btn-danger myAdminButton">End event</button> : ""}
-                                {this.props.userType == "ADMIN" && eInfo.State == "STARTED" ? <button onClick={() => this.startUpdatingScore()} type="button" className="btn btn-info">Update score</button> : ""}
+                                {this.props.userType == "ADMIN" && eventState == "NOT_STARTED" ? <button onClick={() => this.startEvent()} type="button" className="btn btn-success myAdminButton">Start event</button> : ""}
+                                {this.props.userType == "ADMIN" && eventState == "STARTED" ? <button onClick={() => this.endEvent()} type="button" className="btn btn-danger myAdminButton">End event</button> : ""}
+                                {this.props.userType == "ADMIN" && eventState == "STARTED" ? <button onClick={() => this.startUpdatingScore()} type="button" className="btn btn-info">Update score</button> : ""}
 
                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -380,7 +378,7 @@ class EventPage extends Component {
                                         {this.generateListOfEvents()}
                                     </ul>
                                     <hr className="my-4" />
-                                    {this.props.userType == "ADMIN" && eInfo.State == "STARTED" ? <button onClick={() => this.startMatchEvent()} type="button" className="btn btn-warning myAdminButton">Add match event</button> : ""}
+                                    {this.props.userType == "ADMIN" && eventState == "STARTED" ? <button onClick={() => this.startMatchEvent()} type="button" className="btn btn-warning myAdminButton">Add match event</button> : ""}
                                 </div>
                             </div>
 

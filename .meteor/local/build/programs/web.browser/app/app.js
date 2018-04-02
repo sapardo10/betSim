@@ -2524,35 +2524,35 @@ function (_Component) {
       //console.log("Render");
       var bInfo = this.props.betsInfo;
       var eInfo = this.props.eventInfo;
-      eInfo = eInfo[0]; //console.log("Event bets data");
-      //console.log(bInfo);
-      //console.log(eInfo);
-      //console.log("EventPage | Render | Event info: ");
-      //console.log(eInfo);
-
+      eInfo = eInfo[0];
       var state = "";
       var score = "";
       var winnerInfo = "";
+      var eventState = "NOT_STARTED";
 
-      if (eInfo.State == "STARTED") {
-        state = React.createElement("h5", {
-          className: "txtLive"
-        }, "Now Live!");
-        score = React.createElement("h5", {
-          className: "txtScore"
-        }, eInfo.Team1R + " - " + eInfo.Team2R);
-      } else if (eInfo.State == "FINISHED") {
-        state = React.createElement("h5", {
-          className: "txtLive"
-        }, "Event finished!");
-        score = React.createElement("h5", {
-          className: "txtScore"
-        }, eInfo.Team1R + " - " + eInfo.Team2R);
-        winnerInfo = React.createElement("h5", {
-          className: "txtWinner"
-        }, this.getWinner() + " win!");
-      } else {
-        state = React.createElement("h5", null, "Waiting for the event to start!");
+      if (eInfo) {
+        eventState = eInfo.State;
+
+        if (eInfo.State == "STARTED") {
+          state = React.createElement("h5", {
+            className: "txtLive"
+          }, "Now Live!");
+          score = React.createElement("h5", {
+            className: "txtScore"
+          }, eInfo.Team1R + " - " + eInfo.Team2R);
+        } else if (eInfo.State == "FINISHED") {
+          state = React.createElement("h5", {
+            className: "txtLive"
+          }, "Event finished!");
+          score = React.createElement("h5", {
+            className: "txtScore"
+          }, eInfo.Team1R + " - " + eInfo.Team2R);
+          winnerInfo = React.createElement("h5", {
+            className: "txtWinner"
+          }, this.getWinner() + " win!");
+        } else {
+          state = React.createElement("h5", null, "Waiting for the event to start!");
+        }
       }
 
       var updatingScores = this.state.updatingScores;
@@ -2573,19 +2573,19 @@ function (_Component) {
         className: "modal-title"
       }, eInfo.Name + " info..."), React.createElement("div", {
         className: "rightButtons"
-      }, this.props.userType == "ADMIN" && eInfo.State == "NOT_STARTED" ? React.createElement("button", {
+      }, this.props.userType == "ADMIN" && eventState == "NOT_STARTED" ? React.createElement("button", {
         onClick: function () {
           return _this4.startEvent();
         },
         type: "button",
         className: "btn btn-success myAdminButton"
-      }, "Start event") : "", this.props.userType == "ADMIN" && eInfo.State == "STARTED" ? React.createElement("button", {
+      }, "Start event") : "", this.props.userType == "ADMIN" && eventState == "STARTED" ? React.createElement("button", {
         onClick: function () {
           return _this4.endEvent();
         },
         type: "button",
         className: "btn btn-danger myAdminButton"
-      }, "End event") : "", this.props.userType == "ADMIN" && eInfo.State == "STARTED" ? React.createElement("button", {
+      }, "End event") : "", this.props.userType == "ADMIN" && eventState == "STARTED" ? React.createElement("button", {
         onClick: function () {
           return _this4.startUpdatingScore();
         },
@@ -2694,7 +2694,7 @@ function (_Component) {
         className: "list-group"
       }, this.generateListOfEvents()), React.createElement("hr", {
         className: "my-4"
-      }), this.props.userType == "ADMIN" && eInfo.State == "STARTED" ? React.createElement("button", {
+      }), this.props.userType == "ADMIN" && eventState == "STARTED" ? React.createElement("button", {
         onClick: function () {
           return _this4.startMatchEvent();
         },

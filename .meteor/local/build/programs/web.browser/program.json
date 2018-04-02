@@ -675,11 +675,11 @@
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/app/app.js?hash=55f3159b6ad1fc9581b72b9476e1d97fb8af3570",
+      "url": "/app/app.js?hash=51cd962e62ef0e5c60d8b3506342b5d83ba1b970",
       "sourceMap": "app/app.js.map",
-      "sourceMapUrl": "/app/55f3159b6ad1fc9581b72b9476e1d97fb8af3570.map",
-      "size": 141516,
-      "hash": "55f3159b6ad1fc9581b72b9476e1d97fb8af3570"
+      "sourceMapUrl": "/app/51cd962e62ef0e5c60d8b3506342b5d83ba1b970.map",
+      "size": 141475,
+      "hash": "51cd962e62ef0e5c60d8b3506342b5d83ba1b970"
     },
     {
       "path": "packages/service-configuration.js",
