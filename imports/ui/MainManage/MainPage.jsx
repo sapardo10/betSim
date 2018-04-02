@@ -57,9 +57,9 @@ class MainPage extends Component {
                     actEventPage: <EventPage betsInfo={Bets.find({ eventId: eId }).fetch()} eventInfo={Events.find({ _id: eId }).fetch()} userType={mUserType} startEvent={(eID) => this.startEvent(eId)} endEvent={(eId) => this.endEvent(eId)} />,
                     betsToPay: Bets.find({ eventId: eId }).fetch(),
                     lastEndedEvent: Events.find({ _id: eId }).fetch()
+                }, () => {
+                    this.payWinners(eId);
                 })
-
-                this.payWinners(eId);
             });
 
     }
@@ -68,6 +68,10 @@ class MainPage extends Component {
         //console.log("PayWinners");
         //console.log(this.state.betsToPay);
         let eInfo = this.state.lastEndedEvent;
+        eInfo = eInfo[0];
+
+        //console.log("Last ended even: ");     
+        //console.log(eInfo);
 
         let winner = "NA";
 
@@ -107,7 +111,7 @@ class MainPage extends Component {
             }
  
             let newCoins = earning;
-            console.log("New coins: " + newCoins);
+            console.log("Winner is: " + winner + "New coins: " + newCoins);
  
             Meteor.call("UserData.updateCoins", e.userId, earning);
         });
@@ -135,7 +139,7 @@ class MainPage extends Component {
     }
 
     AddBet(eventId, prob1, prob2, probT, bet1, bet2, betT, eR1, eR2, eRt) {
-        console.log("MainPage | AddBet: " + eventId + " - " + prob1 + " - " + prob2 + " - " + probT + " - " + bet1 + " - " + bet2 + " - " + betT + " - " + eR1 + " - " + eR2 + " - " + eRt);
+        //console.log("MainPage | AddBet: " + eventId + " - " + prob1 + " - " + prob2 + " - " + probT + " - " + bet1 + " - " + bet2 + " - " + betT + " - " + eR1 + " - " + eR2 + " - " + eRt);
         //alert("MainPage | Adding bet : " + bet1 + "|" + betT + "|" + bet2 + " | Earnings: " + eR);
         let totalCoins = parseFloat(bet1 + bet2 + betT);
         Meteor.call("Bets.addBet", eventId, prob1, prob2, probT, bet1, bet2, betT, eR1, eR2, eRt, (err, res) => {
@@ -216,7 +220,7 @@ class MainPage extends Component {
 
         let uData = this.props.userData;
         let mUserType = uData ? uData.type: "USER" ;
-        console.log(uData);
+        //console.log(uData);
 
         let eId = this.state.lasEventInfoId;
         let actEventElement = eId ? <EventPage betsInfo={Bets.find({ eventId: eId }).fetch()} eventInfo={Events.find({ _id: eId }).fetch()} userType={mUserType} startEvent={(eID) => this.startEvent(eId)} endEvent={(eId) => this.endEvent(eId)} />: "";

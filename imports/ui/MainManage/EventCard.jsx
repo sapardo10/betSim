@@ -26,7 +26,7 @@ class EventCard extends Component {
                 let nColSize = "col"
 
                 let width = window.innerWidth;
-                console.log("EventCard | Width: " + width);
+                //console.log("EventCard | Width: " + width);
 
                 if (width >= 1500) {
                     nColSize = "col-md-3";

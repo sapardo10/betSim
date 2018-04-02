@@ -183,8 +183,8 @@ class EventBetCard extends Component {
             }
         }
 
-        console.log("Event Bet Card | Event info: ");
-        console.log(eInfo);
+        //console.log("Event Bet Card | Event info: ");
+        //console.log(eInfo);
 
         return (
             <div id={Name} className={this.state.colSize + " myBetCard"}>

@@ -1812,10 +1812,10 @@ function (_Component) {
         } else {
           team1RI = "warning";
         }
-      }
+      } //console.log("Event Bet Card | Event info: ");
+      //console.log(eInfo);
 
-      console.log("Event Bet Card | Event info: ");
-      console.log(eInfo);
+
       return React.createElement("div", {
         id: Name,
         className: this.state.colSize + " myBetCard"
@@ -1969,8 +1969,7 @@ function (_Component) {
       if (this.state.colSize) {
         window.addEventListener('resize', function () {
           var nColSize = "col";
-          var width = window.innerWidth;
-          console.log("EventCard | Width: " + width);
+          var width = window.innerWidth; //console.log("EventCard | Width: " + width);
 
           if (width >= 1500) {
             nColSize = "col-md-3";
@@ -3043,9 +3042,9 @@ function (_Component) {
           lastEndedEvent: Events.find({
             _id: eId
           }).fetch()
+        }, function () {
+          _this3.payWinners(eId);
         });
-
-        _this3.payWinners(eId);
       });
     }
 
@@ -3057,6 +3056,9 @@ function (_Component) {
       //console.log("PayWinners");
       //console.log(this.state.betsToPay);
       var eInfo = this.state.lastEndedEvent;
+      eInfo = eInfo[0]; //console.log("Last ended even: ");     
+      //console.log(eInfo);
+
       var winner = "NA";
 
       if (eInfo.Team1R > eInfo.Team2R) {
@@ -3090,7 +3092,7 @@ function (_Component) {
         }
 
         var newCoins = earning;
-        console.log("New coins: " + newCoins);
+        console.log("Winner is: " + winner + "New coins: " + newCoins);
         Meteor.call("UserData.updateCoins", e.userId, earning);
       });
     }
@@ -3122,8 +3124,8 @@ function (_Component) {
 
   _proto.AddBet = function () {
     function AddBet(eventId, prob1, prob2, probT, bet1, bet2, betT, eR1, eR2, eRt) {
-      console.log("MainPage | AddBet: " + eventId + " - " + prob1 + " - " + prob2 + " - " + probT + " - " + bet1 + " - " + bet2 + " - " + betT + " - " + eR1 + " - " + eR2 + " - " + eRt); //alert("MainPage | Adding bet : " + bet1 + "|" + betT + "|" + bet2 + " | Earnings: " + eR);
-
+      //console.log("MainPage | AddBet: " + eventId + " - " + prob1 + " - " + prob2 + " - " + probT + " - " + bet1 + " - " + bet2 + " - " + betT + " - " + eR1 + " - " + eR2 + " - " + eRt);
+      //alert("MainPage | Adding bet : " + bet1 + "|" + betT + "|" + bet2 + " | Earnings: " + eR);
       var totalCoins = parseFloat(bet1 + bet2 + betT);
       Meteor.call("Bets.addBet", eventId, prob1, prob2, probT, bet1, bet2, betT, eR1, eR2, eRt, function (err, res) {
         if (err) {
@@ -3229,8 +3231,8 @@ function (_Component) {
       }
 
       var uData = this.props.userData;
-      var mUserType = uData ? uData.type : "USER";
-      console.log(uData);
+      var mUserType = uData ? uData.type : "USER"; //console.log(uData);
+
       var eId = this.state.lasEventInfoId;
       var actEventElement = eId ? React.createElement(EventPage, {
         betsInfo: Bets.find({
