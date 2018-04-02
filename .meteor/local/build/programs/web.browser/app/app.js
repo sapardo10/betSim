@@ -2149,6 +2149,8 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 
 var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 
+var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
+
 var React, Component;
 module.watch(require("react"), {
   "default": function (v) {
@@ -2183,14 +2185,27 @@ var EventPage =
 function (_Component) {
   (0, _inheritsLoose2.default)(EventPage, _Component);
 
-  function EventPage() {
-    return _Component.apply(this, arguments) || this;
+  function EventPage(props) {
+    var _this;
+
+    _this = _Component.call(this, props) || this;
+    _this.state = {
+      addingEvents: "none",
+      updatingScores: "none",
+      score1: 0,
+      score2: 0,
+      eventText: "",
+      minute: 0,
+      time: 0
+    };
+    _this.handleChange = _this.handleChange.bind((0, _assertThisInitialized2.default)(_this));
+    return _this;
   }
 
   var _proto = EventPage.prototype;
 
   _proto.componentDidMount = function () {
-    function componentDidMount() {//this.generateChart();
+    function componentDidMount() {//this.generateChart();        
     }
 
     return componentDidMount;
@@ -2409,10 +2424,104 @@ function (_Component) {
     return loadBetsBar;
   }();
 
+  _proto.startUpdatingScore = function () {
+    function startUpdatingScore() {
+      this.setState({
+        updatingScores: " "
+      });
+    }
+
+    return startUpdatingScore;
+  }();
+
+  _proto.endUpdatingScores = function () {
+    function endUpdatingScores() {
+      var _this2 = this;
+
+      var eInfo = this.props.eventInfo;
+      eInfo = eInfo[0];
+      var sc1 = parseInt(this.state.score1);
+      var sc2 = parseInt(this.state.score2);
+      Meteor.call("Events.updateScore", eInfo._id, sc1, sc2, function (err, res) {
+        _this2.setState({
+          updatingScores: "none"
+        }); //this.props.reRender(eInfo._id);
+
+      });
+    }
+
+    return endUpdatingScores;
+  }();
+
+  _proto.startMatchEvent = function () {
+    function startMatchEvent() {
+      this.setState({
+        addingEvents: " "
+      });
+    }
+
+    return startMatchEvent;
+  }();
+
+  _proto.endMatchEvent = function () {
+    function endMatchEvent() {
+      var _this3 = this;
+
+      var eInfo = this.props.eventInfo;
+      eInfo = eInfo[0];
+      var fText = this.state.eventText;
+      var fMin = parseInt(this.state.minute);
+      var fTime = parseInt(this.state.time);
+      Meteor.call("Events.addMatchEvent", eInfo._id, fText, fMin, fTime, function (err, res) {
+        _this3.setState({
+          addingEvents: "none"
+        });
+      });
+    }
+
+    return endMatchEvent;
+  }();
+
+  _proto.handleChange = function () {
+    function handleChange(event) {
+      var _setState;
+
+      this.setState((_setState = {}, _setState[event.target.id] = event.target.value, _setState));
+    }
+
+    return handleChange;
+  }();
+
+  _proto.generateListOfEvents = function () {
+    function generateListOfEvents() {
+      var eInfo = this.props.eventInfo;
+      eInfo = eInfo[0]; //console.log("Generate list of evenst: ");
+      //console.log(eInfo);
+
+      var res = React.createElement("li", {
+        className: "list-group-item"
+      }, "Loading Events...");
+      var count = 0;
+      res = eInfo.Events.map(function (e) {
+        return count++, React.createElement("li", {
+          key: "Event#" + count,
+          className: "list-group-item d-flex justify-content-between align-items-center"
+        }, e.text, React.createElement("span", {
+          className: "badge badge-primary badge-pill"
+        }, "At " + e.minute + " minutes of the " + e.time + " set"));
+      }); //console.log(res);
+
+      return res;
+    }
+
+    return generateListOfEvents;
+  }();
+
   _proto.render = function () {
     function render() {
-      var _this = this;
+      var _this4 = this;
 
+      //console.log("Render");
       var bInfo = this.props.betsInfo;
       var eInfo = this.props.eventInfo;
       eInfo = eInfo[0]; //console.log("Event bets data");
@@ -2446,6 +2555,8 @@ function (_Component) {
         state = React.createElement("h5", null, "Waiting for the event to start!");
       }
 
+      var updatingScores = this.state.updatingScores;
+      var addingEvents = this.state.addingEvents;
       return React.createElement("div", {
         id: "EventModal",
         className: "modal",
@@ -2464,17 +2575,20 @@ function (_Component) {
         className: "rightButtons"
       }, this.props.userType == "ADMIN" && eInfo.State == "NOT_STARTED" ? React.createElement("button", {
         onClick: function () {
-          return _this.startEvent();
+          return _this4.startEvent();
         },
         type: "button",
         className: "btn btn-success myAdminButton"
       }, "Start event") : "", this.props.userType == "ADMIN" && eInfo.State == "STARTED" ? React.createElement("button", {
         onClick: function () {
-          return _this.endEvent();
+          return _this4.endEvent();
         },
         type: "button",
         className: "btn btn-danger myAdminButton"
       }, "End event") : "", this.props.userType == "ADMIN" && eInfo.State == "STARTED" ? React.createElement("button", {
+        onClick: function () {
+          return _this4.startUpdatingScore();
+        },
         type: "button",
         className: "btn btn-info"
       }, "Update score") : "", React.createElement("button", {
@@ -2490,12 +2604,103 @@ function (_Component) {
         className: "container"
       }, React.createElement("div", {
         id: "UpdateInputs",
-        className: "container"
+        className: "container",
+        style: {
+          display: updatingScores
+        }
       }, React.createElement("div", {
-        id: "SetStateDiv"
+        className: "form-row bottomPadding"
+      }, React.createElement("div", {
+        className: "form-group col-md-6"
+      }, React.createElement("label", null, eInfo.Team1 + " score:"), React.createElement("input", {
+        type: "number",
+        min: "0",
+        step: "1",
+        className: "form-control",
+        id: "score1",
+        placeholder: "",
+        value: this.state.score1,
+        onChange: this.handleChange
+      })), React.createElement("div", {
+        className: "form-group col-md-6"
+      }, React.createElement("label", null, eInfo.Team2 + " score:"), React.createElement("input", {
+        type: "number",
+        min: "0",
+        step: "1",
+        className: "form-control",
+        id: "score2",
+        placeholder: "",
+        value: this.state.score2,
+        onChange: this.handleChange
+      }))), React.createElement("button", {
+        onClick: function () {
+          return _this4.endUpdatingScores();
+        },
+        type: "button",
+        className: "btn btn-success"
+      }, "Update score!"), React.createElement("hr", {
+        className: "my-4"
+      })), React.createElement("div", {
+        id: "AddEventInputs",
+        className: "container",
+        style: {
+          display: addingEvents
+        }
+      }, React.createElement("div", {
+        className: "form-row bottomPadding"
+      }, React.createElement("div", {
+        className: "form-group col-md-6"
+      }, React.createElement("label", null, "Minute of the event: "), React.createElement("input", {
+        type: "number",
+        min: "0",
+        step: "1",
+        className: "form-control",
+        id: "minute",
+        placeholder: "",
+        value: this.state.minute,
+        onChange: this.handleChange
+      })), React.createElement("div", {
+        className: "form-group col-md-6"
+      }, React.createElement("label", null, "Set/Quarter of the event:"), React.createElement("input", {
+        type: "number",
+        min: "0",
+        step: "1",
+        className: "form-control",
+        id: "time",
+        placeholder: "",
+        value: this.state.time,
+        onChange: this.handleChange
+      }))), React.createElement("div", {
+        className: "form-group"
+      }, React.createElement("label", {
+        htmlFor: "eventText"
+      }, "Event: "), React.createElement("textarea", {
+        className: "form-control",
+        id: "eventText",
+        rows: "3",
+        value: this.state.eventText,
+        onChange: this.handleChange
+      })), React.createElement("button", {
+        onClick: function () {
+          return _this4.endMatchEvent();
+        },
+        type: "button",
+        className: "btn btn-success"
+      }, "Add match event"), React.createElement("hr", {
+        className: "my-4"
       })), React.createElement("h5", null, "Date: ", eInfo.Date), React.createElement("div", {
         className: "centeredDiv"
-      }, state, score, winnerInfo), this.loadBetsBar())), React.createElement("div", {
+      }, state, score, winnerInfo, this.loadBetsBar(), React.createElement("h5", null, "Match events: "), React.createElement("ul", {
+        className: "list-group"
+      }, this.generateListOfEvents()), React.createElement("hr", {
+        className: "my-4"
+      }), this.props.userType == "ADMIN" && eInfo.State == "STARTED" ? React.createElement("button", {
+        onClick: function () {
+          return _this4.startMatchEvent();
+        },
+        type: "button",
+        className: "btn btn-warning myAdminButton"
+      }, "Add match event") : ""))), React.createElement("div", {
         className: "modal-footer"
       }, React.createElement("button", {
         type: "button",
@@ -2763,7 +2968,9 @@ function (_Component) {
       username: '',
       actEventPage: "",
       betsToPay: [],
-      lastEndedEvent: {}
+      lastEndedEvent: {},
+      lastEventInfo: {},
+      lasEventInfoId: null
     };
     _this.AddBet = _this.AddBet.bind((0, _assertThisInitialized2.default)(_this));
     _this.startEvent = _this.startEvent.bind((0, _assertThisInitialized2.default)(_this));
@@ -2893,26 +3100,18 @@ function (_Component) {
 
   _proto.generateEventPage = function () {
     function generateEventPage(eId) {
-      var _this4 = this;
-
       //console.log("Main page | GenerateEventPage | EventId: " + eId);
       var mUserType = this.props.userData.type;
-      this.setState({
-        actEventPage: React.createElement(EventPage, {
-          betsInfo: Bets.find({
-            eventId: eId
-          }).fetch(),
-          eventInfo: Events.find({
-            _id: eId
-          }).fetch(),
-          userType: mUserType,
-          startEvent: function (eID) {
-            return _this4.startEvent(eId);
-          },
-          endEvent: function (eId) {
-            return _this4.endEvent(eId);
+      /*this.setState({
+          actEventPage: <EventPage betsInfo={Bets.find({ eventId: eId }).fetch()} eventInfo={Events.find({ _id: eId }).fetch()} userType={mUserType} startEvent={(eID) => this.startEvent(eId)} endEvent={(eId) => this.endEvent(eId)} />
+      },
+          () => {
+              $('#EventModal').modal('show')
           }
-        })
+      );*/
+
+      this.setState({
+        lasEventInfoId: eId
       }, function () {
         $('#EventModal').modal('show');
       });
@@ -2967,7 +3166,7 @@ function (_Component) {
 
   _proto.loadCategoryPages = function () {
     function loadCategoryPages() {
-      var _this5 = this;
+      var _this4 = this;
 
       var actCategories = this.props.categories;
       var res = []; //console.log(this.props.userData);        
@@ -2977,10 +3176,10 @@ function (_Component) {
         key: "MyBetsPage",
         myBets: this.props.userBets,
         AddBet: function (eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt) {
-          return _this5.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt);
+          return _this4.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt);
         },
         GenerateEventPage: function (eId) {
-          return _this5.generateEventPage(eId);
+          return _this4.generateEventPage(eId);
         }
       }));
       res.push(actCategories.map(function (e) {
@@ -2990,12 +3189,12 @@ function (_Component) {
           events: Events.find({
             Category: e.name
           }).fetch(),
-          userData: _this5.props.userData,
+          userData: _this4.props.userData,
           AddBet: function (eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt) {
-            return _this5.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt);
+            return _this4.AddBet(eI, p1, p2, pT, b1, b2, bT, eR1, eR2, eRt);
           },
           GenerateEventPage: function (eId) {
-            return _this5.generateEventPage(eId);
+            return _this4.generateEventPage(eId);
           }
         });
       }));
@@ -3007,6 +3206,8 @@ function (_Component) {
 
   _proto.render = function () {
     function render() {
+      var _this5 = this;
+
       var currentUser = this.props.user;
       var currentUserAvailable = currentUser !== undefined;
       var currentUserData = this.props.userData;
@@ -3027,7 +3228,23 @@ function (_Component) {
         }
       }
 
-      var actEventElement = this.state.actEventPage;
+      var mUserType = this.props.userData.type;
+      var eId = this.state.lasEventInfoId;
+      var actEventElement = eId ? React.createElement(EventPage, {
+        betsInfo: Bets.find({
+          eventId: eId
+        }).fetch(),
+        eventInfo: Events.find({
+          _id: eId
+        }).fetch(),
+        userType: mUserType,
+        startEvent: function (eID) {
+          return _this5.startEvent(eId);
+        },
+        endEvent: function (eId) {
+          return _this5.endEvent(eId);
+        }
+      }) : "";
       return React.createElement("div", {
         id: "MainPage"
       }, loggedIn ? React.createElement(BasicNav, {
@@ -3741,7 +3958,8 @@ Meteor.methods({
       Tie: tie,
       State: "NOT_STARTED",
       Team1R: 0,
-      Team2R: 0
+      Team2R: 0,
+      Events: []
     };
     Events.insert(nEvent);
   },
@@ -3762,6 +3980,29 @@ Meteor.methods({
     }, {
       $set: {
         State: "FINISHED"
+      }
+    });
+  },
+  "Events.updateScore": function (eId, sc1, sc2) {
+    Events.update({
+      _id: eId
+    }, {
+      $set: {
+        Team1R: sc1,
+        Team2R: sc2
+      }
+    });
+  },
+  "Events.addMatchEvent": function (eId, fT, fM, fTi) {
+    Events.update({
+      _id: eId
+    }, {
+      $push: {
+        Events: {
+          text: fT,
+          minute: fM,
+          time: fTi
+        }
       }
     });
   }

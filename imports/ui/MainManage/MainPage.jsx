@@ -23,7 +23,9 @@ class MainPage extends Component {
             username: '',
             actEventPage: "",
             betsToPay: [],
-            lastEndedEvent: {}
+            lastEndedEvent: {},
+            lastEventInfo: {},
+            lasEventInfoId: null
         };
 
         this.AddBet = this.AddBet.bind(this);
@@ -115,8 +117,16 @@ class MainPage extends Component {
         //console.log("Main page | GenerateEventPage | EventId: " + eId);
         let mUserType = this.props.userData.type;
 
-        this.setState({
+        /*this.setState({
             actEventPage: <EventPage betsInfo={Bets.find({ eventId: eId }).fetch()} eventInfo={Events.find({ _id: eId }).fetch()} userType={mUserType} startEvent={(eID) => this.startEvent(eId)} endEvent={(eId) => this.endEvent(eId)} />
+        },
+            () => {
+                $('#EventModal').modal('show')
+            }
+        );*/
+
+        this.setState({
+            lasEventInfoId: eId
         },
             () => {
                 $('#EventModal').modal('show')
@@ -204,7 +214,9 @@ class MainPage extends Component {
             }
         }
 
-        let actEventElement = this.state.actEventPage;
+        let mUserType = this.props.userData.type;
+        let eId = this.state.lasEventInfoId;
+        let actEventElement = eId ? <EventPage betsInfo={Bets.find({ eventId: eId }).fetch()} eventInfo={Events.find({ _id: eId }).fetch()} userType={mUserType} startEvent={(eID) => this.startEvent(eId)} endEvent={(eId) => this.endEvent(eId)} />: "";
 
         return (
             <div id="MainPage">

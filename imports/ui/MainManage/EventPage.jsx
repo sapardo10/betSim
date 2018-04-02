@@ -8,8 +8,24 @@ import "../css/EventPage.css";
 
 class EventPage extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = ({
+            addingEvents: "none",
+            updatingScores: "none",
+            score1: 0,
+            score2: 0,
+            eventText: "",
+            minute: 0,
+            time: 0
+        });
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
     componentDidMount() {
-        //this.generateChart();
+        //this.generateChart();        
     }
 
     componentDidUpdate() {
@@ -173,7 +189,7 @@ class EventPage extends Component {
         } else {
             //console.log("Printing bets bar");
             return (<div id="BetsBar">
-            
+
                 <h5>There are no bets yet!</h5>
                 <div className="btn-group myButtonGroup">
                     <span className="badge badge-info myButtonGroup">{eInfo.Team1}</span>
@@ -186,11 +202,80 @@ class EventPage extends Component {
                     <div className="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-valuenow={perT} aria-valuemin="0" aria-valuemax="100" style={{ width: perT + "%" }}>{perT + "%"}</div>
                     <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow={per2} aria-valuemin="0" aria-valuemax="100" style={{ width: per2 + "%" }}>{per2 + "%"}</div>
                 </div>
-        </div>);
+            </div>);
         }
     }
 
+    startUpdatingScore() {
+        this.setState({
+            updatingScores: " "
+        });
+    }
+
+    endUpdatingScores() {
+        let eInfo = this.props.eventInfo;
+        eInfo = eInfo[0];
+
+        let sc1 = parseInt(this.state.score1);
+        let sc2 = parseInt(this.state.score2);
+
+        Meteor.call("Events.updateScore", eInfo._id, sc1, sc2, (err, res) => {
+            this.setState({
+                updatingScores: "none"
+            });
+
+            //this.props.reRender(eInfo._id);
+        });
+    }
+
+    startMatchEvent(){
+        this.setState({
+            addingEvents: " "
+        });
+    }
+
+    endMatchEvent() {
+        let eInfo = this.props.eventInfo;
+        eInfo = eInfo[0];
+
+        let fText = this.state.eventText;
+        let fMin = parseInt(this.state.minute);
+        let fTime = parseInt(this.state.time);
+
+        Meteor.call("Events.addMatchEvent", eInfo._id, fText, fMin, fTime, (err, res) => {
+            this.setState({
+                addingEvents: "none"
+            });
+        });
+    }
+
+    handleChange(event) {
+        this.setState({ [event.target.id]: event.target.value });
+    }
+
+    generateListOfEvents() {
+        let eInfo = this.props.eventInfo;
+        eInfo = eInfo[0];
+        //console.log("Generate list of evenst: ");
+        //console.log(eInfo);
+
+        let res = <li className="list-group-item">Loading Events...</li>;
+        let count = 0;
+        res = eInfo.Events.map((e) => (
+            count++,
+            <li key={"Event#" + count} className="list-group-item d-flex justify-content-between align-items-center">
+                {e.text}
+                <span className="badge badge-primary badge-pill">{"At " + e.minute + " minutes of the " + e.time + " set"}</span>
+            </li>
+        ));
+
+        //console.log(res);
+        return res;
+    }
+
     render() {
+        //console.log("Render");
+
         let bInfo = this.props.betsInfo;
         let eInfo = this.props.eventInfo;
         eInfo = eInfo[0];
@@ -206,6 +291,7 @@ class EventPage extends Component {
         let score = ""
         let winnerInfo = ""
 
+
         if (eInfo.State == "STARTED") {
             state = <h5 className="txtLive">Now Live!</h5>
             score = <h5 className="txtScore">{eInfo.Team1R + " - " + eInfo.Team2R}</h5>
@@ -217,6 +303,9 @@ class EventPage extends Component {
             state = <h5>Waiting for the event to start!</h5>
         }
 
+        let updatingScores = this.state.updatingScores;
+        let addingEvents = this.state.addingEvents;
+
         return (
             <div id="EventModal" className="modal" tabIndex="-1" role="dialog">
                 <div className="modal-dialog modal-lg myEventModal" role="document">
@@ -227,7 +316,7 @@ class EventPage extends Component {
                             <div className="rightButtons">
                                 {this.props.userType == "ADMIN" && eInfo.State == "NOT_STARTED" ? <button onClick={() => this.startEvent()} type="button" className="btn btn-success myAdminButton">Start event</button> : ""}
                                 {this.props.userType == "ADMIN" && eInfo.State == "STARTED" ? <button onClick={() => this.endEvent()} type="button" className="btn btn-danger myAdminButton">End event</button> : ""}
-                                {this.props.userType == "ADMIN" && eInfo.State == "STARTED" ? <button type="button" className="btn btn-info">Update score</button> : ""}
+                                {this.props.userType == "ADMIN" && eInfo.State == "STARTED" ? <button onClick={() => this.startUpdatingScore()} type="button" className="btn btn-info">Update score</button> : ""}
 
                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -236,20 +325,63 @@ class EventPage extends Component {
                         </div>
                         <div className="modal-body">
                             <div className="container">
-                                <div id="UpdateInputs" className="container">
+                                <div id="UpdateInputs" className="container" style={{ display: updatingScores }}>
 
-                                    <div id="SetStateDiv">
+                                    <div className="form-row bottomPadding">
+                                        <div className="form-group col-md-6">
+                                            <label>{eInfo.Team1 + " score:"}</label>
+                                            <input type="number" min="0" step="1" className="form-control" id="score1" placeholder="" value={this.state.score1} onChange={this.handleChange} />
+                                        </div>
 
+                                        <div className="form-group col-md-6">
+                                            <label>{eInfo.Team2 + " score:"}</label>
+                                            <input type="number" min="0" step="1" className="form-control" id="score2" placeholder="" value={this.state.score2} onChange={this.handleChange} />
+                                        </div>
                                     </div>
+
+                                    <button onClick={() => this.endUpdatingScores()} type="button" className="btn btn-success">Update score!</button>
+
+                                    <hr className="my-4" />
                                 </div>
+
+                                <div id="AddEventInputs" className="container" style={{ display: addingEvents}}>
+
+                                    <div className="form-row bottomPadding">
+                                        <div className="form-group col-md-6">
+                                            <label>Minute of the event: </label>
+                                            <input type="number" min="0" step="1" className="form-control" id="minute" placeholder="" value={this.state.minute} onChange={this.handleChange} />
+                                        </div>
+
+                                        <div className="form-group col-md-6">
+                                            <label>Set/Quarter of the event:</label>
+                                            <input type="number" min="0" step="1" className="form-control" id="time" placeholder="" value={this.state.time} onChange={this.handleChange} />
+                                        </div>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label htmlFor="eventText">Event: </label>
+                                        <textarea className="form-control" id="eventText" rows="3" value={this.state.eventText} onChange={this.handleChange} ></textarea>
+                                    </div>
+
+                                    <button onClick={() => this.endMatchEvent()} type="button" className="btn btn-success">Add match event</button>
+
+                                    <hr className="my-4" />
+                                </div>
+
 
                                 <h5>Date: {eInfo.Date}</h5>
                                 <div className="centeredDiv">
                                     {state}
                                     {score}
                                     {winnerInfo}
+                                    {this.loadBetsBar()}
+                                    <h5>Match events: </h5>
+                                    <ul className="list-group">
+                                        {this.generateListOfEvents()}
+                                    </ul>
+                                    <hr className="my-4" />
+                                    {this.props.userType == "ADMIN" && eInfo.State == "STARTED" ? <button onClick={() => this.startMatchEvent()} type="button" className="btn btn-warning myAdminButton">Add match event</button> : ""}
                                 </div>
-                                {this.loadBetsBar()}
                             </div>
 
                         </div>

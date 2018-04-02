@@ -55,7 +55,8 @@ Meteor.methods({
             Tie: tie,
             State: "NOT_STARTED",
             Team1R: 0,
-            Team2R: 0
+            Team2R: 0,
+            Events: []
         };
 
         Events.insert(nEvent);
@@ -79,5 +80,31 @@ Meteor.methods({
                 $set: { State: "FINISHED" }
             }
         );
+    },
+    "Events.updateScore"(eId, sc1, sc2) {
+        Events.update(
+            { _id: eId },
+            {
+                $set: {
+                    Team1R: sc1,
+                    Team2R: sc2
+                }
+            }
+        );
+    },
+    "Events.addMatchEvent"(eId, fT, fM, fTi) {
+        Events.update(
+            { _id: eId },
+            {
+                $push: {
+                    Events: {
+                        text: fT,
+                        minute: fM,
+                        time: fTi
+                    }
+                }
+            }
+        );
+
     }
 });
