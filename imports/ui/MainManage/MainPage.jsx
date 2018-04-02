@@ -214,7 +214,10 @@ class MainPage extends Component {
             }
         }
 
-        let mUserType = this.props.userData.type;
+        let uData = this.props.userData;
+        let mUserType = uData ? uData.type: "USER" ;
+        console.log(uData);
+
         let eId = this.state.lasEventInfoId;
         let actEventElement = eId ? <EventPage betsInfo={Bets.find({ eventId: eId }).fetch()} eventInfo={Events.find({ _id: eId }).fetch()} userType={mUserType} startEvent={(eID) => this.startEvent(eId)} endEvent={(eId) => this.endEvent(eId)} />: "";
 

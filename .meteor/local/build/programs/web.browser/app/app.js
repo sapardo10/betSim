@@ -3228,7 +3228,9 @@ function (_Component) {
         }
       }
 
-      var mUserType = this.props.userData.type;
+      var uData = this.props.userData;
+      var mUserType = uData ? uData.type : "USER";
+      console.log(uData);
       var eId = this.state.lasEventInfoId;
       var actEventElement = eId ? React.createElement(EventPage, {
         betsInfo: Bets.find({
