@@ -34,7 +34,11 @@ class EventBetCard extends Component {
 
                 let width = window.innerWidth;
                 console.log("EventBetCard | Width: " + width);
-
+                /*
+                Bootstrap handles width itself, there is no need to add this code.
+                In case it doesn't work whitout it, it is best to fixt it, since
+                this code decreases code readability without being necessary
+                */
                 if (width >= 1500) {
                     nColSize = "col-md-3";
                 } else if (width > 900 && width < 1500) {
