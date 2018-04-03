@@ -1,3 +1,7 @@
+/*
+It could add a lot more modularity to use the Routes instead of having this amount of info and 
+database querys concentrated in one component
+*/
 import React, { Component } from 'react';
 import { withHistory, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
